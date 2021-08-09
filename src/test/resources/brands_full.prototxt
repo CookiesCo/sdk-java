@@ -1,0 +1,40 @@
+locale {
+  language: "en"
+  country: "US"
+}
+brand {
+  id: "abc123"
+  bid: "C6BI-00001"
+  brand {
+    name {
+      primary: "Cookies"
+    }
+    slug: "cookies"
+    link: "https://cookies.co"
+  }
+  owned: true
+  live: true
+  sort_weight: 998
+  key {
+    bid: "C6BI-00001"
+    label: "Cookies"
+  }
+}
+brand {
+  id: "abc124"
+  bid: "C6BI-00002"
+  brand {
+    name {
+      primary: "Lemonnade"
+    }
+    slug: "cookies"
+    link: "https://thereallemonnade.com"
+  }
+  owned: true
+  live: true
+  sort_weight: 999
+  key {
+    bid: "C6BI-00002"
+    label: "Lemonnade"
+  }
+}

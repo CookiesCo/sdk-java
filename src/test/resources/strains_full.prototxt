@@ -1,0 +1,283 @@
+locale {
+  language: "en"
+  country: "US"
+}
+strain {
+    id: "C6V20-0002"
+    slug: "pink-rozay"
+    name {
+      primary: "Pink Rozay"
+    }
+    brand {
+      id: "2vbr5N2VGQmkywvtdsaUES"
+      bid: "C6BI-00003"
+      brand {
+        name {
+          primary: "Collins Ave"
+          display: "Collins Ave"
+        }
+        media {
+          raster {
+            standard {
+              key {
+                id: "asset/2908221b5c4569ff/original/Collins-Ave-Primary-Logo-Blue"
+              }
+              uri: "https://a.c6cdn.net/o/id: \"asset/2908221b5c4569ff/original/Collins-Ave-Primary-Logo-Blue\"\n"
+            }
+          }
+        }
+        theme {
+          primary {
+            hex: "#d46696"
+          }
+          secondary {
+            hex: "#d46696"
+          }
+          alert {
+            hex: "#fefefe"
+          }
+        }
+        slug: "collins-ave"
+        link: "https://collinsave.co"
+      }
+      owned: true
+      icon {
+        key {
+          id: "asset/2908221b5c4569ff/original/Collins-Ave-Primary-Logo-Blue"
+        }
+        type {
+          image_type: PNG
+        }
+        serving_uri: "https://a.c6cdn.net/o/asset/2908221b5c4569ff/original/Collins-Ave-Primary-Logo-Blue.png"
+      }
+      negative_icon {
+        key {
+          id: "asset/6288cb51dc083991/original/Collins-Ave-Type-Only-Logo-White"
+        }
+        type {
+          image_type: PNG
+        }
+        serving_uri: "https://a.c6cdn.net/o/asset/6288cb51dc083991/original/Collins-Ave-Type-Only-Logo-White.png"
+      }
+      live: true
+      sort_weight: 5
+    }
+    species: HYBRID_INDICA
+    media {
+      artwork {
+        raster {
+          key {
+            id: "asset/1cc572a88fc52b6a/original/CAVE_StrainArt_PinkRozay_050620"
+          }
+          type {
+            image_type: PNG
+          }
+          serving_uri: "https://a.c6cdn.net/o/asset/1cc572a88fc52b6a/original/CAVE_StrainArt_PinkRozay_050620.png"
+        }
+      }
+      lockup {
+        raster {
+          key {
+            id: "asset/1bb476096ccf643c/original/xnu6h0zhlfejuhdftgyj"
+          }
+          type {
+            image_type: PNG
+          }
+          serving_uri: "https://a.c6cdn.net/o/asset/1bb476096ccf643c/original/xnu6h0zhlfejuhdftgyj.png"
+        }
+      }
+      head {
+        key {
+          id: "asset/34ee63dd21ce20ad/original/mxmcfl6al6urcjix6orh"
+        }
+        type {
+          image_type: JPG
+        }
+        serving_uri: "https://a.c6cdn.net/o/asset/34ee63dd21ce20ad/original/mxmcfl6al6urcjix6orh.jpg"
+      }
+      packaging {
+        key {
+          id: "asset/6b9ed6c36f438b5e/original/yqetfogdaur7kx6vflmy"
+        }
+        type {
+          image_type: PNG
+        }
+        serving_uri: "https://a.c6cdn.net/o/asset/6b9ed6c36f438b5e/original/yqetfogdaur7kx6vflmy.png"
+      }
+      card {
+        key {
+          id: "asset/582b574aa087a454/original/qp19d89rivgyfd0jwjey"
+        }
+        type {
+          image_type: JPG
+        }
+        serving_uri: "https://a.c6cdn.net/o/asset/582b574aa087a454/original/qp19d89rivgyfd0jwjey.jpg"
+      }
+      menu {
+        key {
+          id: "asset/e339bf11f6ed5f4/original/kqzydxhspbxbkkjlqoih"
+        }
+        type {
+          image_type: JPG
+        }
+        serving_uri: "https://a.c6cdn.net/o/asset/e339bf11f6ed5f4/original/kqzydxhspbxbkkjlqoih.jpg"
+      }
+      masthead {
+        portrait {
+          key {
+            id: "asset/21b606b7b1d15bb1/original/j9dx1jfe7rabogyjvw2e"
+          }
+          type {
+            image_type: JPG
+          }
+          serving_uri: "https://a.c6cdn.net/o/asset/21b606b7b1d15bb1/original/j9dx1jfe7rabogyjvw2e.jpg"
+        }
+        landscape {
+          key {
+            id: "asset/782d531fe41c109f/original/kn6cmictobsrzbba2exv"
+          }
+          type {
+            image_type: PNG
+          }
+          serving_uri: "https://a.c6cdn.net/o/asset/782d531fe41c109f/original/kn6cmictobsrzbba2exv.png"
+        }
+      }
+      macro {
+        key {
+          id: "asset/7bc20abab69db0ed/original/ttmuklimpvgwwupquwm7"
+        }
+        type {
+          image_type: JPG
+        }
+        serving_uri: "https://a.c6cdn.net/o/asset/7bc20abab69db0ed/original/ttmuklimpvgwwupquwm7.jpg"
+      }
+      material {
+        key {
+          id: "asset/52fe5c078a6172ac/original/kavyjbmdecjcwtyomcdm"
+        }
+        type {
+          image_type: JPG
+        }
+        serving_uri: "https://a.c6cdn.net/o/asset/52fe5c078a6172ac/original/kavyjbmdecjcwtyomcdm.jpg"
+      }
+      cultivation {
+        key {
+          id: "asset/34ee63dd21ce20ad/original/mxmcfl6al6urcjix6orh"
+        }
+        type {
+          image_type: JPG
+        }
+        serving_uri: "https://a.c6cdn.net/o/asset/34ee63dd21ce20ad/original/mxmcfl6al6urcjix6orh.jpg"
+      }
+      lifestyle {
+        key {
+          id: "asset/4ca908bbbcae8bb7/original/ikdyi32pooroty0uetcu"
+        }
+        type {
+          image_type: JPG
+        }
+        serving_uri: "https://a.c6cdn.net/o/asset/4ca908bbbcae8bb7/original/ikdyi32pooroty0uetcu.jpg"
+      }
+      tile {
+        key {
+          id: "asset/e339bf11f6ed5f4/original/kqzydxhspbxbkkjlqoih"
+        }
+        type {
+          image_type: JPG
+        }
+        serving_uri: "https://a.c6cdn.net/o/asset/e339bf11f6ed5f4/original/kqzydxhspbxbkkjlqoih.jpg"
+      }
+    }
+    material {
+      breeder: "Cookies"
+      aroma: "Bright, floral yeast"
+      flavor: "Smooth velvet cake"
+      experience: "Strong head high with relaxed body feel"
+    }
+    featured: true
+    exclusive: true
+    visible: true
+    theme {
+      primary {
+        hex: "#cc678c"
+      }
+    }
+    breeder {
+      id: "1x6YokRQldwP7HpGRG18XL"
+      slug: "cookies"
+      name {
+        primary: "Cookies"
+      }
+      brand {
+        id: "2bqMdszNwnpdAk27sPVygO"
+        bid: "C6BI-00001"
+        brand {
+          name {
+            primary: "Cookies"
+            display: "Cookies"
+          }
+          media {
+            raster {
+              standard {
+                key {
+                  id: "asset/1cd34f38d45fd1bb/original/CBite-Blue-on-White-No-Padding"
+                }
+                uri: "https://a.c6cdn.net/o/id: \"asset/1cd34f38d45fd1bb/original/CBite-Blue-on-White-No-Padding\"\n"
+              }
+            }
+          }
+          theme {
+            primary {
+              hex: "#00A0DC"
+            }
+            secondary {
+              hex: "#00A0DC"
+            }
+            alert {
+              hex: "#FEFEFE"
+            }
+          }
+          slug: "cookies"
+          link: "https://cookies.co"
+        }
+        owned: true
+        icon {
+          key {
+            id: "asset/1cd34f38d45fd1bb/original/CBite-Blue-on-White-No-Padding"
+          }
+          type {
+            image_type: PNG
+          }
+          serving_uri: "https://a.c6cdn.net/o/asset/1cd34f38d45fd1bb/original/CBite-Blue-on-White-No-Padding.png"
+        }
+        negative_icon {
+          key {
+            id: "asset/375b253864f96eb7/original/C-Bite-Logo-White"
+          }
+          type {
+            image_type: PNG
+          }
+          serving_uri: "https://a.c6cdn.net/o/asset/375b253864f96eb7/original/C-Bite-Logo-White.png"
+        }
+        live: true
+      }
+      logo {
+        key {
+          id: "brand/cookies/c-bite/vefbx3gfunhoaowplkbn"
+        }
+        type {
+          image_type: PNG
+        }
+        serving_uri: "https://a.c6cdn.net/o/brand/cookies/c-bite/vefbx3gfunhoaowplkbn"
+      }
+      in_house: true
+    }
+    social {
+      review_count: 14
+      review_rating: 91
+    }
+    key {
+        id: "C6V20-0002"
+        label: "Pink Rozay"
+    }
+}

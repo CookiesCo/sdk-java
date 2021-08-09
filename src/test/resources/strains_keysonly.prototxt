@@ -1,0 +1,10 @@
+locale {
+  language: "en"
+  country: "US"
+}
+strain {
+    key {
+        id: "C6V20-0002"
+        label: "Pink Rozay"
+    }
+}

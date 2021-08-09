@@ -1,0 +1,16 @@
+locale {
+  language: "en"
+  country: "US"
+}
+brand {
+  key {
+    bid: "C6BI-00001"
+    label: "Cookies"
+  }
+}
+brand {
+  key {
+    bid: "C6BI-00002"
+    label: "Lemonnade"
+  }
+}
