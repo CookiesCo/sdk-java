@@ -1,0 +1,34 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "enabled": true,
+  "pinDigests": true,
+  "cloneSubmodules": false,
+  "fetchReleaseNotes": true,
+  "stabilityDays": 3,
+  "rebaseWhen": "auto",
+  "assigneesFromCodeOwners": true,
+  "branchConcurrentLimit": 10,
+  "prConcurrentLimit": 10,
+  "labels": [
+    "dependencies"
+  ],
+  "dependencyDashboard": true,
+  "dependencyDashboardAutoclose": false,
+  "enabledManagers": [
+    "dockerfile",
+    "github-actions",
+    "bazel",
+    "buildkite",
+    "gradle"
+  ],
+  "vulnerabilityAlerts": {
+    "labels": [
+      "security",
+    ],
+    "assignees": [
+      "@sgammon"
+    ]
+  }
+}
