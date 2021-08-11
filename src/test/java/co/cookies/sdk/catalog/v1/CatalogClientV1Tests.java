@@ -18,14 +18,22 @@ import co.cookies.sdk.catalog.CatalogClient;
 import co.cookies.sdk.catalog.v1.stub.CatalogV1StubSettings;
 import com.google.api.gax.grpc.GrpcTransportChannel;
 import com.google.api.gax.rpc.FixedTransportChannelProvider;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
-import cookies.schema.catalog.CatalogV1Grpc;
+import cookies.schema.catalog.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
+import static co.cookies.sdk.CookiesSDK.sync;
+import static co.cookies.sdk.CookiesSDK.async;
 import static co.cookies.sdk.ServiceTestUtil.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,6 +55,14 @@ public final class CatalogClientV1Tests {
             // using the provided stub, factory ourselves a client instance, and hand it to the test.
             clientTest.accept(CatalogClientV1.forStub(stub));
         });
+    }
+
+    private <T> T resolve(ListenableFuture<T> future) {
+        try {
+            return future.get(2, TimeUnit.MINUTES);
+        } catch (InterruptedException | TimeoutException | ExecutionException rxe) {
+            throw new RuntimeException(rxe);
+        }
     }
 
     @Test void testAcquireMockService() {
@@ -129,5 +145,67 @@ public final class CatalogClientV1Tests {
             sdk::close,
             "SDK objects should be safely closeable"
         );
+    }
+
+    @Test void testFetchBrandsBlocking() {
+        acquireMockedClient((client) -> {
+            var brands = client.brands(sync(BrandsRequest.getDefaultInstance()));
+            assertNotNull(brands, "mock brands response should not be null");
+            assertFalse(brands.isEmpty(), "mock brands should not be empty");
+        });
+    }
+
+    @Test void testFetchStrainsBlocking() {
+        acquireMockedClient((client) -> {
+            var strains = client.strains(sync(StrainsRequest.getDefaultInstance()));
+            assertNotNull(strains, "mock strains response should not be null");
+            assertFalse(strains.isEmpty(), "mock strains should not be empty");
+        });
+    }
+
+    @Test void testFetchProductBlocking() {
+        acquireMockedClient((client) -> {
+            var product = client.product(sync(ProductRequest.getDefaultInstance()));
+            assertNotNull(product, "mock product response should not be null");
+            assertFalse(product.isEmpty(), "mock product should not be empty");
+        });
+    }
+
+    @Test void testFetchBrandsNonBlocking() {
+        acquireMockedClient((client) -> {
+            var brands = client.brands(async(BrandsRequest.getDefaultInstance()));
+            assertNotNull(brands, "mock brands future response should not be null");
+            var brandsList = resolve(brands);
+            assertFalse(brandsList.isEmpty(), "mock brands should not be empty");
+        });
+    }
+
+    @Test void testFetchStrainsNonBlocking() {
+        acquireMockedClient((client) -> {
+            var strains = client.strains(async(StrainsRequest.getDefaultInstance()));
+            assertNotNull(strains, "mock strains future response should not be null");
+            var strainsList = resolve(strains);
+            assertFalse(strainsList.isEmpty(), "mock strains should not be empty");
+        });
+    }
+
+    @Test void testFetchProductNonBlocking() {
+        acquireMockedClient((client) -> {
+            var product = client.product(async(ProductRequest.getDefaultInstance()));
+            assertNotNull(product, "mock product future response should not be null");
+            var productObj = resolve(product);
+            assertFalse(productObj.isEmpty(), "mock product should not be empty");
+        });
+    }
+
+    @Test void testSyncProductsNonBlocking() {
+        acquireMockedClient((client) -> {
+            var product = client.sync(
+                    async(MultiProductRequest.getDefaultInstance()));
+            assertNotNull(product, "mock product response should not be null");
+            var stream = resolve(product);
+            var items = stream.collect(Collectors.toUnmodifiableList());
+            assertFalse(items.isEmpty(), "mock product sync response should not be empty");
+        });
     }
 }

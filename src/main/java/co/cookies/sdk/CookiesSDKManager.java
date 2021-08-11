@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
-
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentMap;
@@ -252,16 +251,6 @@ public abstract class CookiesSDKManager
                 logging.error(format("Cannot register service '%s': closed.", service.getServiceInfo().serviceTag()));
             throw new IllegalStateException(format(
                 "Cannot register service ('%s') after closing an SDK manager.",
-                service.getServiceInfo().serviceTag()
-            ));
-        }
-
-        // can't have been registered already
-        if (serviceMap.containsKey(service.getServiceInfo())) {
-            if (logging.isErrorEnabled())
-                logging.error(format("Cannot re-register service '%s'.", service.getServiceInfo().serviceTag()));
-            throw new IllegalStateException(format(
-                "Cannot re-register already-registered service '%s'.",
                 service.getServiceInfo().serviceTag()
             ));
         }

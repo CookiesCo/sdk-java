@@ -26,13 +26,13 @@ import org.slf4j.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
-
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static co.cookies.sdk.SDKUtil.applyAsync;
+import static co.cookies.sdk.SDKUtil.applyStream;
 import static java.lang.String.format;
-import static co.cookies.sdk.SDKUtil.*;
 
 
 /**

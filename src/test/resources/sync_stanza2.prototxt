@@ -1,0 +1,10 @@
+product {
+  ref {
+    ctin: "C033281"
+  }
+}
+product {
+  ref {
+    ctin: "C033283"
+  }
+}

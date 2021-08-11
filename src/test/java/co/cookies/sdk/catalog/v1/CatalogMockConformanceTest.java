@@ -14,6 +14,7 @@
 package co.cookies.sdk.catalog.v1;
 
 import co.cookies.sdk.ProtoLoader;
+import co.cookies.sdk.catalog.CatalogClient;
 import cookies.schema.catalog.*;
 import io.grpc.Status;
 import org.junit.jupiter.api.Test;

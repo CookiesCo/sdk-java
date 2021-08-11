@@ -13,7 +13,10 @@
  */
 package co.cookies.sdk;
 
-import co.cookies.sdk.exceptions.*;
+import co.cookies.sdk.exceptions.CookiesRPCException;
+import co.cookies.sdk.exceptions.CookiesSDKException;
+import co.cookies.sdk.exceptions.RPCExecutionException;
+import co.cookies.sdk.exceptions.RPCTimeoutException;
 import co.cookies.sdk.services.AsyncRPC;
 import co.cookies.sdk.services.SyncRPC;
 import com.google.api.core.ApiFuture;
@@ -35,9 +38,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static com.google.common.util.concurrent.Futures.catching;
-import static com.google.common.util.concurrent.Futures.transform;
-import static com.google.common.util.concurrent.Futures.withTimeout;
+import static com.google.common.util.concurrent.Futures.*;
 import static java.lang.String.format;
 
 

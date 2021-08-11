@@ -70,11 +70,19 @@ public final class MockCatalogServiceImpl extends CatalogV1Grpc.CatalogV1ImplBas
 
     @Override
     public void retrieve(CatalogRequest request, StreamObserver<CatalogResponse> responseObserver) {
-        throw new IllegalStateException("not yet implemented");
+        throw new IllegalStateException("deprecated");
     }
 
     @Override
     public void sync(MultiProductRequest request, StreamObserver<CatalogProductSet> responseObserver) {
-        throw new IllegalStateException("not yet implemented");
+        responseObserver.onNext(ProtoLoader.loadTextFile(
+            CatalogProductSet.newBuilder(),
+            "/sync_stanza1.prototxt"
+        ));
+        responseObserver.onNext(ProtoLoader.loadTextFile(
+            CatalogProductSet.newBuilder(),
+            "/sync_stanza2.prototxt"
+        ));
+        responseObserver.onCompleted();
     }
 }

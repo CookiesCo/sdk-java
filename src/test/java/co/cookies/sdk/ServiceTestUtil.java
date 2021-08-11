@@ -88,7 +88,7 @@ public class ServiceTestUtil {
 
             continuance.accept(server, channel);
 
-        } catch (Throwable thr) {
+        } catch (Exception thr) {
             throw new RuntimeException(thr);
         } finally {
             if (server != null) {

@@ -13,11 +13,15 @@
  */
 package co.cookies.sdk.catalog.v1;
 
-import co.cookies.sdk.*;
+import co.cookies.sdk.CookiesSDK;
+import co.cookies.sdk.SDKConfiguration;
 import co.cookies.sdk.catalog.CatalogClient;
 import co.cookies.sdk.catalog.v1.stub.CatalogV1Stub;
 import co.cookies.sdk.exceptions.ServiceSetupError;
-import co.cookies.sdk.services.*;
+import co.cookies.sdk.services.AsyncRPC;
+import co.cookies.sdk.services.BaseService;
+import co.cookies.sdk.services.BaseServiceInfo;
+import co.cookies.sdk.services.Client;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
@@ -32,12 +36,12 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
-
 import java.util.Collection;
 import java.util.Optional;
+import java.util.concurrent.Executors;
 import java.util.stream.Stream;
 
-import static co.cookies.sdk.SDKUtil.*;
+import static co.cookies.sdk.SDKUtil.protect;
 
 
 /**
@@ -156,7 +160,14 @@ public final class CatalogClientV1 extends BaseService<CatalogV1Client> implemen
     /** @inheritDoc */
     @Override
     public @Nonnull ListeningScheduledExecutorService executorService() {
-        return MoreExecutors.listeningDecorator(service().getSettings().getExecutorProvider().getExecutor());
+        if (service().getSettings() != null) {
+            return MoreExecutors.listeningDecorator(service().getSettings().getExecutorProvider().getExecutor());
+        }
+
+        // no custom executor: use a single-thread scheduled executor.
+        return MoreExecutors.listeningDecorator(
+            Executors.newSingleThreadScheduledExecutor()
+        );
     }
 
     /** @inheritDoc */

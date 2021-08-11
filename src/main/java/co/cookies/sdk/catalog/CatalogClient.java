@@ -16,9 +16,9 @@ package co.cookies.sdk.catalog;
 
 import co.cookies.sdk.CookiesSDK;
 import co.cookies.sdk.SDKServiceProvider;
+import co.cookies.sdk.catalog.v1.CatalogV1Client;
 import co.cookies.sdk.services.AsyncRPC;
 import co.cookies.sdk.services.ServiceClient;
-import co.cookies.sdk.catalog.v1.CatalogV1Client;
 import co.cookies.sdk.services.SyncRPC;
 import com.google.common.util.concurrent.ListenableFuture;
 import cookies.schema.Brand;
@@ -30,7 +30,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static co.cookies.sdk.SDKUtil.*;
+import static co.cookies.sdk.SDKUtil.block;
 
 
 /**
