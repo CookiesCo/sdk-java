@@ -10,7 +10,7 @@ plugins {
 
 group 'co.cookies.sdk'
 archivesBaseName = "sdk-java"
-version 'v1.2021r1-beta1'
+version 'v1.2021r1-beta2-SNAPSHOT'
 
 sourceCompatibility = 11
 targetCompatibility = 11
