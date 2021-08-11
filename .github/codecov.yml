@@ -5,6 +5,9 @@ codecov:
   ci:
     - buildkite
 
+fixes:
+  - "src/main/java/co/cookies/sdk/::"
+
 coverage:
   precision: 2
   round: down
