@@ -11,7 +11,7 @@ fixes:
 coverage:
   precision: 2
   round: down
-  range: "60...90"
+  range: "60...80"
   status:
     project:
       default:
