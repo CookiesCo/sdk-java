@@ -157,7 +157,7 @@ into tools like [Postman](https://www.postman.com/).
 #### API Console
 
 Access the API Console at:
-[https://console.api.cookies.co](https://console.api.cookies.co)
+[https://console.api.cloud.cookies.co/](https://console.api.cloud.cookies.co)
 
 #### OpenAPI/Postman Spec
 
