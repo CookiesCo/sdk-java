@@ -28,7 +28,7 @@ In your **`pom.xml`**:
     <dependency>
         <groupId>co.cookies.sdk</groupId>
         <artifactId>sdk-java</artifactId>
-        <version>v1.2021r1</version>
+        <version>v1.2021r1-beta1</version>
     </dependency>
 </dependencies>
 
@@ -46,7 +46,7 @@ In your **`pom.xml`**:
 Groovy syntax:
 ```groovy
 dependencies {
-    implementation 'co.cookies.sdk:sdk-java:v1.2021r1'
+    implementation 'co.cookies.sdk:sdk-java:v1.2021r1-beta1'
 }
 
 repositories {
@@ -59,7 +59,7 @@ repositories {
 Kotlin syntax:
 ```kotlin
 dependencies {
-    implementation("co.cookies.sdk.sdk-java:v1.2021r1")
+    implementation("co.cookies.sdk.sdk-java:v1.2021r1-beta1")
 }
 
 maven {
@@ -73,8 +73,8 @@ In your **`WORKSPACE`**:
 ```starlark
 maven_jar(
   name = "co_cookies_sdk",
-  artifact = "co.cookies.sdk.sdk-java:v1.2021r1",
-  sha256 = "75ba08cae08903528149d8c4c96204416e8d87d74af6a8f470e5c28de401cabc",
+  artifact = "co.cookies.sdk.sdk-java:v1.2021r1-beta1",
+  sha256 = "104329b140bfccaaf77bf0aeff38922c84d8f700f6116e369f6bf2c4ab4ac33f",
 )
 ```
 
