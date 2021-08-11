@@ -1,0 +1,45 @@
+codecov:
+  max_report_age: off
+  wait_for_ci: no
+  require_ci_to_pass: yes
+  ci:
+    - buildkite
+
+coverage:
+  precision: 2
+  round: down
+  range: "60...90"
+  status:
+    project:
+      default:
+        target: 80%
+        threshold: 15%
+        base: auto
+        informational: true
+
+    patch:
+      default:
+        target: 80%
+        threshold: 5%
+        base: auto
+
+github_checks:
+  annotations: true
+
+parsers:
+  pass
+
+comment:
+  layout: "reach,diff,flags,tree"
+  behavior: default
+  require_changes: no
+
+ignore:
+  - "vendor/"
+  - "src/test/"
+  - "gradle/"
+  - ".run/"
+  - ".idea/"
+  - ".gradle/"
+  - ".github/"
+  - "scripts/"

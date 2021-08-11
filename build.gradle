@@ -1,17 +1,22 @@
 plugins {
-    id 'java'
+    id "java-library"
     id "maven-publish"
     id "com.google.cloud.artifactregistry.gradle-plugin" version "2.1.1"
-    id 'jacoco'
+    id "org.sonarqube" version "3.3"
+    id "jacoco"
+    id "signing"
+    id "io.github.gradle-nexus.publish-plugin" version "1.1.0"
 }
 
 group 'co.cookies.sdk'
+archivesBaseName = "sdk-java"
 version 'v1.2021r1'
 
 sourceCompatibility = 11
 targetCompatibility = 11
 
 dependencies {
+    implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
     implementation group: 'co.cookies.sdk', name: 'gapic-sdk-catalog-v1-java', version: '0.0.0-SNAPSHOT'
     implementation group: 'co.cookies.sdk.grpc', name: 'grpc-sdk-catalog-v1-java', version: '0.0.0-SNAPSHOT'
     implementation group: 'co.cookies.sdk.proto', name: 'proto-sdk-catalog-v1-java', version: '0.0.0-SNAPSHOT'
@@ -25,25 +30,84 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
-publishing {
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "CookiesCo_sdk-java"
+        property "sonar.organization", "cookies"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
+
+nexusPublishing {
     repositories {
-        maven {
-            url "artifactregistry://us-maven.pkg.dev/cookies-co/sdk-java"
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
         }
     }
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name "gcloud"
+            url "artifactregistry://us-maven.pkg.dev/cookies-co/sdk-java"
+        }
+        repositories {
+            maven {
+                name = "github"
+                url = uri("https://maven.pkg.github.com/CookiesCo/sdk-java")
+                credentials {
+                    username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+                    password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
+    }
+}
+
+tasks.withType(PublishToMavenRepository) {
+    onlyIf {
+        (repository.name == findProperty("artifactRepository"))
+    }
+}
+
+signing {
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
+}
+
 repositories {
     maven {
+        name "gcloud"
         url "artifactregistry://us-maven.pkg.dev/cookies-co/sdk-java"
     }
+    maven {
+        name "github"
+        url "https://maven.pkg.github.com/CookiesCo/sdk-java"
+    }
+    google()
     mavenCentral()
 }
 
 jacocoTestReport {
     reports {
-        xml.enabled true
-        html.enabled false
+        xml.required = true
+        html.required = true
     }
 }
 
@@ -52,3 +116,10 @@ test {
 }
 
 check.dependsOn jacocoTestReport
+
+if (hasProperty('buildScan')) {
+    buildScan {
+        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+        termsOfServiceAgree = 'yes'
+    }
+}
