@@ -28,4 +28,26 @@ public abstract class BaseServiceInfo implements ServiceInfo {
     public int hashCode() {
         return serviceTag().hashCode();
     }
+
+    /**
+     * Two service information objects are equal if they represent the same service name and version.
+     *
+     * @param other Other object to compare.
+     * @return Whether the two are considered equal.
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof BaseServiceInfo)) return false;
+        BaseServiceInfo that = (BaseServiceInfo) other;
+        return serviceTag().equals(that.serviceTag());
+    }
+
+    @Override
+    public String toString() {
+        return "BaseServiceInfo{" +
+            "serviceName='" + serviceName() + '\'' +
+            ", serviceVersion='" + serviceVersion() + '\'' +
+        '}';
+    }
 }

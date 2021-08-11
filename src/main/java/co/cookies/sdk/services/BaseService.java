@@ -101,8 +101,9 @@ public abstract class BaseService<Stub extends BackgroundResource> implements Se
                 }
             }
         } catch (InterruptedException ixe) {
-            svc.shutdownNow();
             // we don't care
+            svc.shutdownNow();
+            Thread.currentThread().interrupt();
         }
     }
 
