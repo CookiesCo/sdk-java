@@ -13,6 +13,6 @@
  */
 
 /**
- *
+ * Provides exceptions used by the SDK that might surface to invoking developers.
  */
 package co.cookies.sdk.exceptions;

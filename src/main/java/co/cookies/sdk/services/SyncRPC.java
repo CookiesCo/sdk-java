@@ -23,9 +23,13 @@ import javax.annotation.concurrent.ThreadSafe;
 
 
 /**
+ * Defines a convenience wrapper for a synchronous RPC operation, which can carry with it a timeout and an optional set
+ * of call-level context to apply when executed.
  *
+ * <p>Synchronous RPCs are <b>blocking</b>, meaning a synchronous call will block the thread it is issued from until a
+ * response is received from the server. For asynchronous (non-blocking) RPC operations, check out {@link AsyncRPC}.</p>
  *
- * @param <R>
+ * @param <R> Request type which is expected to be submitted with this RPC.
  */
 @Immutable @ThreadSafe
 public final class SyncRPC<R extends Message> extends BaseRPC<R> {

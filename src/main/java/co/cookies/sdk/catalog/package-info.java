@@ -13,6 +13,6 @@
  */
 
 /**
- *
+ * Provides a service client for accessing the Cookies Catalog API.
  */
 package co.cookies.sdk.catalog;

@@ -57,6 +57,8 @@ public class ServiceInfoTest {
         };
         assertEquals(synth.hashCode(), foreign.hashCode(), "service info hash code should be predictable");
         assertEquals(0, synth.compareTo(foreign), "service info sort order should work correctly");
+        assertEquals(foreign, synth, "foreign should equal synthesized service info");
+        assertNotNull(foreign.toString(), "string formatting should work for service info");
     }
 
     @Test void testServiceInfoOrderable() {

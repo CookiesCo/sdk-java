@@ -45,7 +45,7 @@ public abstract class BaseServiceInfo implements ServiceInfo {
 
     @Override
     public String toString() {
-        return "BaseServiceInfo{" +
+        return "ServiceInfo{" +
             "serviceName='" + serviceName() + '\'' +
             ", serviceVersion='" + serviceVersion() + '\'' +
         '}';

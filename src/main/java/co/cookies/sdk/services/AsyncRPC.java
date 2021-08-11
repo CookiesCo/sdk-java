@@ -23,9 +23,13 @@ import javax.annotation.concurrent.ThreadSafe;
 
 
 /**
+ * Defines a convenience wrapper for an asynchronous RPC operation, which can carry with it a timeout and an optional
+ * set of call-level context to apply when executed.
  *
+ * <p>Asynchronous RPCs are <b>non-blocking</b>, meaning an asynchronous call will never block the thread it is issued
+ * from, instead returning immediately with a future container for a result value.</p>
  *
- * @param <R>
+ * @param <R> Request type which is expected to be submitted with this RPC.
  */
 @Immutable @ThreadSafe
 public final class AsyncRPC<R extends Message> extends BaseRPC<R> {
@@ -41,35 +45,38 @@ public final class AsyncRPC<R extends Message> extends BaseRPC<R> {
     }
 
     /**
+     * Wrap the provided protocol buffer request in an asynchronous RPC container.
      *
-     *
-     * @param request
-     * @param <R>
-     * @return
+     * @param request Request which we should wrap.
+     * @param <R> Request type we are wrapping.
+     * @return Wrapped request as an asynchronous RPC.
      */
     public static @Nonnull <R extends Message> AsyncRPC<R> of(@Nonnull R request) {
         return async(request, DEFAULT_TIMEOUT);
     }
 
     /**
+     * Wrap the provided protocol buffer request in an asynchronous RPC container, specifying a timeout to be enforced
+     * when the operation executes.
      *
-     *
-     * @param request
-     * @param timeout
-     * @param <R>
-     * @return
+     * @param request Request which we should wrap.
+     * @param timeout Timeout to enforce.
+     * @param <R> Request type we are wrapping.
+     * @return Wrapped request as an asynchronous RPC.
      */
     public static @Nonnull <R extends Message> AsyncRPC<R> async(@Nonnull R request, @Nonnull Timeout timeout) {
         return async(request, timeout, null);
     }
 
     /**
+     * Wrap the provided protocol buffer request in an asynchronous RPC container, specifying a timeout to be enforced
+     * when the operation executes, and a set of call-level context to apply.
      *
-     *
-     * @param request
-     * @param timeout
-     * @param <R>
-     * @return
+     * @param request Request which we should wrap.
+     * @param timeout Timeout to enforce.
+     * @param context Context to apply to this call only.
+     * @param <R> Request type we are wrapping.
+     * @return Wrapped request as an asynchronous RPC.
      */
     public static @Nonnull <R extends Message> AsyncRPC<R> async(@Nonnull R request,
                                                                  @Nonnull Timeout timeout,

@@ -13,6 +13,6 @@
  */
 
 /**
- *
+ * Provides a version 1 implementation of the Catalog API client.
  */
 package co.cookies.sdk.catalog.v1;

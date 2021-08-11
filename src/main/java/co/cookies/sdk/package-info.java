@@ -13,6 +13,6 @@
  */
 
 /**
- * Provides SDK-level managers and utilities, which enable developers with access to underlying service clients.
+ * Cookies SDK for Java.
  */
 package co.cookies.sdk;

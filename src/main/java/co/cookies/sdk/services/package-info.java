@@ -13,6 +13,6 @@
  */
 
 /**
- *
+ * Provides generic service classes, including RPC wrappers, service client interfaces, and timeouts.
  */
 package co.cookies.sdk.services;
