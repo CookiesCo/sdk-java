@@ -1,0 +1,60 @@
+
+org = "CookiesCo"
+sourceBranch = "main"
+platformBase = "dev"
+platformBranch = "upstream/sdk-java"
+sourceProject = "%s/sdk-java" % org
+targetProject = "%s/platform" % org
+defaultAuthor = "Cookiebot <techteam+github@cookiescalifornia.com>"
+
+sourceRepo = "git@github.com:%s.git" % sourceProject
+platformHttp = "https://github.com/%s.git" % targetProject
+platformRepo = "git@github.com:%s.git" % targetProject
+destination_prefix = "cookies/api/client/java/facade"
+destination_files = [
+  "%s/**/*.*" % destination_prefix,
+  "%s/*.*" % destination_prefix,
+]
+
+allowedAuthors = [
+    "sam.g@cookies.co",
+    "sam.g@cookiescalifornia.com",
+]
+
+
+core.workflow(
+    name = "upstream",
+    mode = "SQUASH",
+    description = "Migrate Java SDK facade sources to and from the public repository.",
+    reversible_check = True,
+    destination_files = glob(destination_files + [
+        "%s/README.md" % destination_prefix,
+    ]),
+    authoring = authoring.allowed(
+        default = defaultAuthor,
+        allowlist = allowedAuthors,
+    ),
+    origin = git.origin(url = sourceRepo, ref = sourceBranch),
+    destination = git.github_pr_destination(
+        url = platformHttp,
+        pr_branch = platformBranch,
+        title = "☕ Update: Java SDK",
+        update_description = True,
+        destination_ref = platformBase,
+        body = "Updates pushed upstream from the public [Java SDK satellite repository](https://github.com/CookiesCo/sdk-java).",
+        integrates = [],
+    ),
+    origin_files = glob([".gitattributes", "README.md"] + [
+        "**/*.*",
+        "*.*",
+    ]),
+    transformations = [
+        metadata.save_author(),
+        metadata.expose_label("COPYBARA_INTEGRATE_REVIEW"),
+        metadata.expose_label("GITHUB_PR_NUMBER", new_name ="Closes", separator=" #"),
+        core.move(
+            "",
+            destination_prefix,
+        ),
+    ],
+)
