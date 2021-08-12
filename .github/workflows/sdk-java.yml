@@ -10,7 +10,7 @@ on:
 jobs:
   migrate-upstream:
     runs-on: ubuntu-latest
-    name: Migrate: Upstream
+    name: "Migrate: Upstream"
     steps:
       # 1: Pull code.
       - uses: actions/checkout@v2
