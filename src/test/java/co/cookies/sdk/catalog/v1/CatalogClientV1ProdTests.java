@@ -16,12 +16,20 @@ package co.cookies.sdk.catalog.v1;
 
 import co.cookies.sdk.CookiesSDK;
 import cookies.schema.catalog.BrandsRequest;
+import cookies.schema.catalog.CatalogQueryOptions;
+import cookies.schema.catalog.MultiProductRequest;
+import cookies.schema.catalog.StrainsRequest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 import static co.cookies.sdk.CookiesSDK.sync;
+import static co.cookies.sdk.CookiesSDK.async;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -39,5 +47,40 @@ public class CatalogClientV1ProdTests {
         var brands = sdk.catalog().brands(sync(BrandsRequest.getDefaultInstance()));
         assertNotNull(brands, "brands response should not be null");
         assertFalse(brands.isEmpty(), "brands should not be empty");
+    }
+
+    @Test void testGetStrains() {
+        var sdk = CookiesSDK.builder()
+                .setApiKey(Optional.ofNullable(System.getenv("C6S_API_KEY_TESTING")))
+                .setEndpoint(Optional.of("catalog.api.cookies.co:443"))
+                .build();
+
+        var strains = sdk.catalog().strains(sync(StrainsRequest.getDefaultInstance()));
+        assertNotNull(strains, "strains response should not be null");
+        assertFalse(strains.isEmpty(), "strains should not be empty");
+    }
+
+    @Test void testProductSync() throws InterruptedException, TimeoutException, ExecutionException {
+        var sdk = CookiesSDK.builder()
+                .setApiKey(Optional.ofNullable(System.getenv("C6S_API_KEY_TESTING")))
+                .setEndpoint(Optional.of("catalog.api.cookies.co:443"))
+                .build();
+
+        var op = sdk.catalog().sync(async(MultiProductRequest.newBuilder()
+            .setLocale("en-US")
+            .setNonce(12345)
+            .setOptions(CatalogQueryOptions.newBuilder()
+                .setContent(CatalogQueryOptions.ContentMode.KEYS_ONLY)
+                .build())
+            .addCtin("C033274")
+            .addCtin("C033280")
+            .addCtin("C033281")
+            .build()));
+
+        var productStream = op.get(30, TimeUnit.SECONDS);
+        var products = productStream.collect(Collectors.toUnmodifiableList());
+
+        assertNotNull(products, "products response should not be null");
+        assertFalse(products.isEmpty(), "products should not be empty");
     }
 }
