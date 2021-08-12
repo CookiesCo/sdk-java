@@ -1,6 +1,0 @@
-build/
-build-cache/
-.idea/
-.gradle/
-.DS_Store
-dist/
