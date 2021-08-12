@@ -92,8 +92,8 @@ own codebase:
 
 | Dependency          | Coordinates                         | Version      |
 | ------------------- | ----------------------------------- | ------------ |
-| Protocol Buffers    | `com.google.protobuf:protobuf-java` | ``           |
-| gRPC Java           | `io.grpc:grpc-bom`                  |              |
+| Protocol Buffers    | `com.google.protobuf:protobuf-java` | `3.15.x `    |
+| gRPC Java           | `io.grpc:grpc-bom`                  | `1.37.0`     |
 | _Any SLF4J library_ | _N/A_                               | _N/A_        |
 
 #### A note about logging
