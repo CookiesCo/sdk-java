@@ -75,6 +75,8 @@ public class CatalogClientV1ProdTests {
             .addCtin("C033274")
             .addCtin("C033280")
             .addCtin("C033281")
+            .addCtin("C036809")
+            .addCtin("C999999")  // known not to exist
             .build()));
 
         var productStream = op.get(30, TimeUnit.SECONDS);
@@ -82,5 +84,8 @@ public class CatalogClientV1ProdTests {
 
         assertNotNull(products, "products response should not be null");
         assertFalse(products.isEmpty(), "products should not be empty");
+
+        // we should only find 4
+        assertEquals(4, products.size(), "should only find 4 of 5 matching products");
     }
 }
