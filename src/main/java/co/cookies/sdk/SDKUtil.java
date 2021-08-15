@@ -245,11 +245,11 @@ public final class SDKUtil {
 
                     // convert to a stream via the provided transformer. response streams produced by the server are
                     // joined into a single stream.
-                    return Stream.iterate(
+                    return Stream.concat(Stream.of(item), Stream.iterate(
                         item,
                         (entry) -> iter.hasNext(),
                         (entry) -> iter.next()
-                    ).flatMap(transformer);
+                    )).flatMap(transformer);
                 }
 
                 // if we never have a next item, then it's an empty result stream.
