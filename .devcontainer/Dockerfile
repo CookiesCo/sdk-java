@@ -8,8 +8,6 @@ ENV SHELL=zsh \
 USER dev
 WORKDIR /home/dev
 
-COPY defs/container.bazelrc /home/dev/bazelrc.remote
-
 RUN mkdir -p $HOME/sdk-java \
     && cd $HOME/sdk-java \
     && git clone https://github.com/CookiesCo/sdk-java . \
