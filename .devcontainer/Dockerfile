@@ -7,10 +7,3 @@ ENV SHELL=zsh \
 
 USER dev
 WORKDIR /home/dev
-
-RUN mkdir -p $HOME/sdk-java \
-    && cd $HOME/sdk-java \
-    && git clone https://github.com/CookiesCo/sdk-java . \
-    && ./gradlew --no-daemon build -x test \
-    && cd $HOME \
-    && rm -fr sdk-java;
