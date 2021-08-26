@@ -13,7 +13,7 @@ jobs:
     name: "Migrate: Upstream"
     steps:
       # 1: Pull code.
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f # renovate: tag=v2
 
       # 2: Validate migration via Copybara.
       - name: Validate Migration
