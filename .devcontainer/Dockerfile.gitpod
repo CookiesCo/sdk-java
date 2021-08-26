@@ -1,0 +1,8 @@
+
+FROM us-docker.pkg.dev/cookies-eng/public/base/gitpod:latest
+
+ENV SHELL=zsh \
+    HOME=/home/gitpod \
+    DEVCONTAINER=yes
+
+COPY defs/container.bazelrc /home/gitpod/.bazelrc
