@@ -25,7 +25,7 @@ dependencies {
     api group: 'co.cookies.sdk.proto', name: 'proto-sdk-catalog-v1-java', version: 'v1.2021r1alpha4'
     api group: 'co.cookies.sdk', name: 'proto-catalog', version: 'v1.2021r1alpha4'
     api group: 'co.cookies.sdk', name: 'proto-cookies', version: 'v1.2021r1alpha4'
-    compileOnly group: 'com.google.auto.value', name: 'auto-value-annotations', version: '1.8.1'
+    compileOnly group: 'com.google.auto.value', name: 'auto-value-annotations', version: '1.8.2'
     runtimeOnly group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.5'
     annotationProcessor group: 'com.google.auto.value', name: 'auto-value', version: '1.8.2'
     testImplementation "com.google.truth:truth:1.1.3"
