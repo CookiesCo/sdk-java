@@ -17,7 +17,7 @@ jobs:
 
       # 2: Validate migration via Copybara.
       - name: Validate Migration
-        uses: sgammon/copybara-action@fb5e58332d721b8044b5360ced76d6d77448d9d6
+        uses: sgammon/copybara-action@51f611fce943e2dc77238c9c38c5fc2f37d3c51e
         with:
           git_name: Cookiebot
           git_email: techteam+github@cookiescalifornia.com
@@ -32,7 +32,7 @@ jobs:
 
       # 3: Publish to upstream as a PR.
       - name: Migration
-        uses: sgammon/copybara-action@fb5e58332d721b8044b5360ced76d6d77448d9d6
+        uses: sgammon/copybara-action@51f611fce943e2dc77238c9c38c5fc2f37d3c51e
         with:
           git_name: Cookiebot
           git_email: techteam+github@cookiescalifornia.com
