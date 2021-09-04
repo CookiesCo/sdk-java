@@ -22,8 +22,8 @@ coverage:
 
     patch:
       default:
-        target: 80%
-        threshold: 5%
+        target: 70%
+        threshold: 15%
         base: auto
 
 github_checks:
