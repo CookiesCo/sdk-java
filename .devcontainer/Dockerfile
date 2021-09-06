@@ -1,5 +1,5 @@
 
-FROM us-docker.pkg.dev/cookies-eng/public/base/codespaces:v1j@sha256:11ad9980e5d9c3292f8e300f127079fd829a18b2fadedb7e979d890a7003741a
+FROM us-docker.pkg.dev/cookies-eng/public/base/codespaces:v1j@sha256:c25dc111caad63e534affd0fd338d23a497bfc979c08dfe4a8e3e962d0f70281
 
 ENV SHELL=zsh \
     HOME=/home/dev \
