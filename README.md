@@ -31,6 +31,14 @@ In your **`pom.xml`**:
         <version>v1.2021r1-beta3</version>
     </dependency>
 </dependencies>
+
+<repositories>
+    <repository>
+        <repository>
+            <url>https://maven.pkg.github.com/CookiesCo/sdk-java</url>
+        </repository>
+    </repository>
+</repositories>
 ```
 
 #### Gradle
@@ -40,12 +48,22 @@ Groovy syntax:
 dependencies {
     implementation 'co.cookies.sdk:sdk-java:v1.2021r1-beta3'
 }
+
+repositories {
+    maven {
+        url "https://maven.pkg.github.com/CookiesCo/sdk-java"
+    }
+}
 ```
 
 Kotlin syntax:
 ```kotlin
 dependencies {
     implementation("co.cookies.sdk.sdk-java:v1.2021r1-beta3")
+}
+
+maven {
+    url = uri("https://maven.pkg.github.com/CookiesCo/sdk-java")
 }
 ```
 
@@ -56,7 +74,7 @@ In your **`WORKSPACE`**:
 maven_jar(
   name = "co_cookies_sdk",
   artifact = "co.cookies.sdk.sdk-java:v1.2021r1-beta3",
-  sha256 = "<sha256 here>",
+  sha256 = "de2dede6ac061f249d2f990eec37d2388a7ae212cd6e8cdf068a9d4c7f19fc63",
 )
 ```
 

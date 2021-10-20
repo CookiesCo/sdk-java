@@ -179,7 +179,6 @@ public final class CatalogClientV1 extends BaseService<CatalogV1Client> implemen
     // -- API Interface: Catalog -- //
 
     /** @inheritDoc */
-    @Override
     public @Nonnull ListenableFuture<Collection<Brand>> brands(@Nonnull AsyncRPC<BrandsRequest> rpc) {
         return execute(
             rpc,
@@ -190,7 +189,6 @@ public final class CatalogClientV1 extends BaseService<CatalogV1Client> implemen
     }
 
     /** @inheritDoc */
-    @Override
     public @Nonnull ListenableFuture<Collection<Strain>> strains(@Nonnull AsyncRPC<StrainsRequest> rpc) {
         return execute(
             rpc,
@@ -201,7 +199,6 @@ public final class CatalogClientV1 extends BaseService<CatalogV1Client> implemen
     }
 
     /** @inheritDoc */
-    @Override
     public @Nonnull ListenableFuture<Optional<FinalProduct>> product(@Nonnull AsyncRPC<ProductRequest> rpc) {
         return execute(
             rpc,
@@ -212,7 +209,6 @@ public final class CatalogClientV1 extends BaseService<CatalogV1Client> implemen
     }
 
     /** @inheritDoc */
-    @Override
     public @Nonnull ListenableFuture<Stream<CatalogProduct>> sync(@Nonnull AsyncRPC<MultiProductRequest> rpc) {
         return stream(
             rpc,
