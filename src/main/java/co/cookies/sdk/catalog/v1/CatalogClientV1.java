@@ -199,7 +199,7 @@ public final class CatalogClientV1 extends BaseService<CatalogV1Client> implemen
     }
 
     /** @inheritDoc */
-    public @Nonnull ListenableFuture<Optional<FinalProduct>> product(@Nonnull AsyncRPC<ProductRequest> rpc) {
+    public @Nonnull ListenableFuture<Optional<ProductRecord>> product(@Nonnull AsyncRPC<ProductRequest> rpc) {
         return execute(
             rpc,
             CatalogV1Grpc.getProductMethod(),
