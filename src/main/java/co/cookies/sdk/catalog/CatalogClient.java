@@ -118,7 +118,7 @@ public interface CatalogClient extends ServiceClient<CatalogV1Client> {
      * @param rpc RPC operation to retrieve an individual canonical product record.
      * @return Resulting product record, or {@link Optional#empty()} if it could not be found.
      */
-    default @Nonnull Optional<ProductRecord> product(@Nonnull SyncRPC<ProductRequest> rpc) {
+    default @Nonnull Optional<FinalProduct> product(@Nonnull SyncRPC<ProductRequest> rpc) {
         return block(rpc, logger(), CatalogV1Grpc.getProductMethod(), this::product);
     }
 
@@ -131,7 +131,7 @@ public interface CatalogClient extends ServiceClient<CatalogV1Client> {
      * @param rpc RPC operation to retrieve an individual canonical product record.
      * @return Resulting product record, or {@link Optional#empty()} if it could not be found.
      */
-    @Nonnull ListenableFuture<Optional<ProductRecord>> product(@Nonnull AsyncRPC<ProductRequest> rpc);
+    @Nonnull ListenableFuture<Optional<FinalProduct>> product(@Nonnull AsyncRPC<ProductRequest> rpc);
 
     // -- API: Product Sync -- //
 
