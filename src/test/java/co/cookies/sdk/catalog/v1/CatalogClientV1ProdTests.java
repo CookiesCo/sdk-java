@@ -70,7 +70,7 @@ public class CatalogClientV1ProdTests {
             .setLocale("en-US")
             .setNonce(12345)
             .setOptions(CatalogQueryOptions.newBuilder()
-                .setInclusionMode(CatalogQueryOptions.ContentInclusionMode.KEYS_ONLY)
+                .setContent(CatalogQueryOptions.ContentMode.KEYS_ONLY)
                 .build())
             .addCtin("C033274")
             .addCtin("C033280")
