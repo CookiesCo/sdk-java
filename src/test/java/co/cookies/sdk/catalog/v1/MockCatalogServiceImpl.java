@@ -29,7 +29,7 @@ public final class MockCatalogServiceImpl extends CatalogV1Grpc.CatalogV1ImplBas
 
     @Override
     public void brands(BrandsRequest request, StreamObserver<BrandsResponse> responseObserver) {
-        if (request.getOptions().getContent() == CatalogQueryOptions.ContentMode.KEYS_ONLY) {
+        if (request.getOptions().getInclusionMode() == CatalogQueryOptions.ContentInclusionMode.KEYS_ONLY) {
             responseObserver.onNext(ProtoLoader.loadTextFile(
                 BrandsResponse.newBuilder(),
                 "/brands_keysonly.prototxt"
@@ -45,7 +45,7 @@ public final class MockCatalogServiceImpl extends CatalogV1Grpc.CatalogV1ImplBas
 
     @Override
     public void strains(StrainsRequest request, StreamObserver<StrainsResponse> responseObserver) {
-        if (request.getOptions().getContent() == CatalogQueryOptions.ContentMode.KEYS_ONLY) {
+        if (request.getOptions().getInclusionMode() == CatalogQueryOptions.ContentInclusionMode.KEYS_ONLY) {
             responseObserver.onNext(ProtoLoader.loadTextFile(
                 StrainsResponse.newBuilder(),
                 "/strains_keysonly.prototxt"
