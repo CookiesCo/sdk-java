@@ -41,8 +41,7 @@ import java.util.Optional;
  */
 public interface SDKConfiguration {
     /** @return Full endpoint to use by default with APIs. */
-    @Nonnull
-    String endpoint();
+    @Nonnull String endpoint();
 
     /** @return Factory to use for spawning service loggers. */
     @Nonnull ILoggerFactory loggerFactory();
