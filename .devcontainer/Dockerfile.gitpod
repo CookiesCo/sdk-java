@@ -1,5 +1,5 @@
 
-FROM us-docker.pkg.dev/cookies-eng/public/base/gitpod:latest@sha256:9c8a37c679e664c15d42cb9fc8ac908564d5fb3b44f1a211ef35415d8a3539f0
+FROM us-docker.pkg.dev/cookies-eng/public/base/gitpod:latest
 
 ENV SHELL=zsh \
     HOME=/home/gitpod \

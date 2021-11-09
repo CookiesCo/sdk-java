@@ -1,5 +1,5 @@
 
-FROM us-docker.pkg.dev/cookies-eng/public/base/codespaces:v1j@sha256:c25dc111caad63e534affd0fd338d23a497bfc979c08dfe4a8e3e962d0f70281
+FROM us-docker.pkg.dev/cookies-eng/public/base/codespaces:v1h
 
 ENV SHELL=zsh \
     HOME=/home/dev \
@@ -7,3 +7,12 @@ ENV SHELL=zsh \
 
 USER dev
 WORKDIR /home/dev
+
+COPY defs/container.bazelrc /home/dev/bazelrc.remote
+
+RUN mkdir -p $HOME/sdk-java \
+    && cd $HOME/sdk-java \
+    && git clone https://github.com/CookiesCo/sdk-java . \
+    && ./gradlew --no-daemon build -x test \
+    && cd $HOME \
+    && rm -fr sdk-java;
