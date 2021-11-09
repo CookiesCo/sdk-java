@@ -17,6 +17,7 @@ import co.cookies.sdk.catalog.CatalogClient;
 import co.cookies.sdk.catalog.v1.CatalogClientV1;
 import co.cookies.sdk.services.BaseService;
 import co.cookies.sdk.services.ServiceInfo;
+import com.google.api.core.ApiFunction;
 import com.google.api.gax.core.*;
 import com.google.api.gax.grpc.InstantiatingGrpcChannelProvider;
 import com.google.api.gax.rpc.HeaderProvider;
@@ -25,20 +26,26 @@ import com.google.auth.Credentials;
 import com.google.auto.value.AutoValue;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.shaded.io.grpc.netty.NegotiationType;
+import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
+import io.grpc.netty.shaded.io.netty.handler.ssl.ApplicationProtocolConfig;
+import io.grpc.netty.shaded.io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.threeten.bp.Duration;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
+import javax.net.ssl.SSLException;
 import java.util.Optional;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static java.lang.String.format;
@@ -75,7 +82,7 @@ import static java.lang.String.format;
  * @see CookiesSDK#builder() Facade factory
  */
 @AutoValue @Immutable @ThreadSafe
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "rawtypes"})
 public abstract class CookiesSDKManager
         extends ExtensibleCookiesSDK<SDKConfiguration>
         implements SDKConfiguration, SDKServiceProvider {
@@ -122,6 +129,43 @@ public abstract class CookiesSDKManager
          * @return Custom RPC endpoint, or {@link Optional#empty()}.
          */
         public abstract Optional<String> getEndpoint();
+
+        /**
+         * Set whether to enable private access.
+         *
+         * <p>Private access must be enabled when running in private cluster circumstances.<br /><b>Caution:</b> only
+         * enable this if you know what you're doing.</p>
+         *
+         * @param privateAccess Whether to enable private access.
+         * @return Builder, for chainability.
+         */
+        public abstract Builder setPrivateAccess(Optional<Boolean> privateAccess);
+
+        /**
+         * Return whether private API access is enabled.
+         *
+         * @return Private API access indication.
+         */
+        public abstract Optional<Boolean> getPrivateAccess();
+
+        /**
+         * Set a channel configurator, which is called each time a new managed channel is instantiated with a filled-out
+         * builder; user-land code can opt to customize the builder before it is put to use, or return one just-in-time.
+         *
+         * @param fn Function to use when customizing the managed channel instantiation process. To clear the current
+         *           function, if any, pass {@link Optional#empty()}.
+         * @return Builder, for chainability.
+         */
+        public abstract Builder setChannelConfigurator(
+                Optional<Function<ManagedChannelBuilder, ManagedChannelBuilder>> fn);
+
+        /**
+         * Retrieve the current channel configurator, if any, or {@link Optional#empty()} if none if currently installed
+         * at the time this method is called.
+         *
+         * @return Current channel configurator, if any.
+         */
+        public abstract Optional<Function<ManagedChannelBuilder, ManagedChannelBuilder>> getChannelConfigurator();
 
         /**
          * Set a custom executor provider (overrides any set custom executor).
@@ -293,6 +337,9 @@ public abstract class CookiesSDKManager
     // Method stub to return a configured custom API endpoint.
     public abstract @Nonnull Optional<String> getEndpoint();
 
+    // Method stub to return an indication of private access state.
+    public abstract @Nonnull Optional<Boolean> getPrivateAccess();
+
     /**
      * Return the configured endpoint to use for RPC traffic.
      *
@@ -365,6 +412,50 @@ public abstract class CookiesSDKManager
         return getLoggerFactory().orElseGet(LoggerFactory::getILoggerFactory);
     }
 
+    // Method stub to return any higher-order channel configurator configured for this SDK manager.
+    public abstract @Nonnull Optional<Function<ManagedChannelBuilder, ManagedChannelBuilder>> getChannelConfigurator();
+
+    // Utility function to return a channel configurator, based on the provided high-order channel configurator, or any
+    // defaults that should be applied.
+    private ApiFunction<ManagedChannelBuilder, ManagedChannelBuilder> channelConfigurator() {
+        return input -> {
+            // apply base customizations
+            input.useTransportSecurity();
+            input.offloadExecutor(executorProvider().getExecutor());
+            input.keepAliveWithoutCalls(true);
+            input.keepAliveTime(1, TimeUnit.MINUTES);
+            input.keepAliveTimeout(10, TimeUnit.MINUTES);
+            input.enableRetry();
+            input.maxRetryAttempts(3);
+            input.userAgent("Cookies SDK/J v1");
+
+            var nettyBuilder = (NettyChannelBuilder)input;
+            nettyBuilder.negotiationType(NegotiationType.TLS);
+
+            // apply any requisite private access settings
+            if (getPrivateAccess().orElse(false)) {
+                var endpoint = endpoint();
+                if (logging.isInfoEnabled())
+                    logging.info("Enabling private Cookies API access (endpoint: '{}')", endpoint);
+                input.overrideAuthority(endpoint);
+                try {
+                    nettyBuilder.sslContext(GrpcSslContexts.forClient()
+                        .trustManager(InsecureTrustManagerFactory.INSTANCE)
+                        .build());
+                } catch (SSLException e) {
+                    if (logging.isWarnEnabled())
+                        logging.warn("Failed to enable private SSL settings. Access may fail.", e);
+                }
+            }
+
+            var configurator = getChannelConfigurator();
+            if (configurator.isPresent()) {
+                return configurator.get().apply(input);
+            }
+            return input;
+        };
+    }
+
     // Method stub to return an immutable transport provider.
     abstract @Nonnull Optional<TransportChannelProvider> getTransportChannelProvider();
 
@@ -382,7 +473,11 @@ public abstract class CookiesSDKManager
         return getTransportChannelProvider().orElseGet(() ->
             InstantiatingGrpcChannelProvider.newBuilder()
                     .setEndpoint(endpoint())
+                    .setKeepAliveTime(Duration.ofMinutes(1))
+                    .setKeepAliveTimeout(Duration.ofMinutes(10))
+                    .setKeepAliveWithoutCalls(true)
                     .setExecutor(executorProvider().getExecutor())
+                    .setChannelConfigurator(channelConfigurator())
                     .build()
         );
     }
