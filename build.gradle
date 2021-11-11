@@ -8,30 +8,37 @@ plugins {
     id "io.github.gradle-nexus.publish-plugin" version "1.1.0"
 }
 
-group 'co.cookies.sdk'
+group "co.cookies.sdk"
 archivesBaseName = "sdk-java"
-version 'v1.2021r1-beta4'
+version "v1.2021r1-beta5"
 
 sourceCompatibility = 11
 targetCompatibility = 11
 
 dependencies {
-    api group: 'com.google.api', name: 'gax', version: '1.66.0'
-    api group: 'com.google.api', name: 'gax-grpc', version: '1.66.0'
-    api group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
-    api group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
-    api group: 'co.cookies.sdk', name: 'gapic-sdk-catalog-v1-java', version: 'v1.2021r1beta1'
-    api group: 'co.cookies.sdk.grpc', name: 'grpc-sdk-catalog-v1-java', version: 'v1.2021r1beta1'
-    api group: 'co.cookies.sdk.proto', name: 'proto-sdk-catalog-v1-java', version: 'v1.2021r1beta1'
-    api group: 'co.cookies.sdk', name: 'proto-catalog', version: 'v1.2021r1beta1'
-    api group: 'co.cookies.sdk', name: 'proto-cookies', version: 'v1.2021r1beta1'
-    compileOnly group: 'com.google.auto.value', name: 'auto-value-annotations', version: '1.8.2'
-    runtimeOnly group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.5'
-    annotationProcessor group: 'com.google.auto.value', name: 'auto-value', version: '1.8.2'
+    api group: "io.grpc", name: "grpc-stub", version: "1.37.0"
+    api group: "io.grpc", name: "grpc-protobuf", version: "1.37.0"
+    api group: "io.grpc", name: "grpc-netty-shaded", version: "1.37.0"
+    api group: "com.google.api", name: "gax", version: "2.6.1"
+    api group: "com.google.api", name: "gax-grpc", version: "2.6.1"
+    api group: "org.slf4j", name: "slf4j-api", version: "1.7.32"
+    api group: "javax.annotation", name: "javax.annotation-api", version: "1.3.2"
+    api group: "co.cookies.sdk", name: "gapic-sdk-catalog-v1-java", version: "v1.2021r1beta5"
+    api group: "co.cookies.sdk.grpc", name: "grpc-sdk-catalog-v1-java", version: "v1.2021r1beta5"
+    api group: "co.cookies.sdk.proto", name: "proto-sdk-catalog-v1-java", version: "v1.2021r1beta5"
+    api group: "co.cookies.sdk", name: "gapic-sdk-storefront-v1-java", version: "v1.2021r1beta5"
+    api group: "co.cookies.sdk.grpc", name: "grpc-sdk-storefront-v1-java", version: "v1.2021r1beta5"
+    api group: "co.cookies.sdk.proto", name: "proto-sdk-storefront-v1-java", version: "v1.2021r1beta5"
+    api group: "co.cookies.sdk", name: "proto-catalog", version: "v1.2021r1beta5"
+    api group: "co.cookies.sdk", name: "proto-cookies", version: "v1.2021r1beta5"
+    api group: "co.cookies.sdk", name: "proto-storefront", version: "v1.2021r1beta5"
+    compileOnly group: "com.google.auto.value", name: "auto-value-annotations", version: "1.8.2"
+    runtimeOnly group: "ch.qos.logback", name: "logback-classic", version: "1.2.6"
+    annotationProcessor group: "com.google.auto.value", name: "auto-value", version: "1.8.2"
     testImplementation "com.google.truth:truth:1.1.3"
     testImplementation "com.google.truth.extensions:truth-proto-extension:1.1.3"
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.1"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 }
 
 java {
@@ -39,7 +46,7 @@ java {
     withJavadocJar()
 }
 
-javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+javadoc.options.addStringOption("Xdoclint:none", "-quiet")
 
 sonarqube {
     properties {
@@ -120,10 +127,10 @@ test {
 
 check.dependsOn jacocoTestReport
 
-if (hasProperty('buildScan')) {
+if (hasProperty("buildScan")) {
     buildScan {
-        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-        termsOfServiceAgree = 'yes'
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
     }
 }
 
