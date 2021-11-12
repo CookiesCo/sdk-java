@@ -15,6 +15,7 @@ package co.cookies.sdk;
 
 
 import co.cookies.sdk.catalog.CatalogClient;
+import co.cookies.sdk.storefront.Storefront;
 
 import javax.annotation.Nonnull;
 import java.io.Closeable;
@@ -42,6 +43,24 @@ public interface SDKServiceProvider extends Closeable, AutoCloseable {
      */
     default @Nonnull CatalogClient catalog() {
         return catalog(Optional.empty());
+    }
+
+    /**
+     * Access a pre-configured instance of the {@link Storefront} facade, which enables access to services such as the
+     * Menu API, Checkout API, and Profile API.
+     *
+     * <p>The Storefront Service is organized into multiple individual APIs, each of which are meant for different roles
+     * in the supply chain played by Cookies <b>trading partners</b>, <b>development partners</b>, and other affiliated
+     * organizations. Calls to the API backend require authentication with API keys, and, depending on required scope,
+     * authorized user credentials.</p>
+     *
+     * <p>These credentials and keys can be acquired through the Tech@Cookies team. See main library docs for more
+     * information.</p>
+     *
+     * @return Pre-configured Storefront facade.
+     */
+    default @Nonnull Storefront storefront() {
+        throw new IllegalStateException("not yet implemented");
     }
 
     /**

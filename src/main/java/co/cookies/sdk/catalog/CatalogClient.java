@@ -43,7 +43,7 @@ import static co.cookies.sdk.SDKUtil.block;
  *
  * <p><b>Note:</b> The Cookies Catalog API is a <b>private API service</b> designed for use by Cookies Engineering,
  * partners, contractors, and vendors. To invoke methods on this API, one must provide a valid API key and set of
- * credentials with sufficient authorization scopes.</p>
+ * credentials with sufficient authorization scope.</p>
  */
 public interface CatalogClient extends ServiceClient<CatalogV1Client> {
     // -- API: Brands -- //
