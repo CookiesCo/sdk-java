@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 /** Generic facade class tests. */
-public class CookiesSDKTests {
+public final class CookiesSDKTests {
     @Test void testGetStaticDefaults() {
         assertEquals(
             "api.cookies.co",

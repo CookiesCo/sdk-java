@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 /** Tests for static service info descriptors. */
-public class ServiceInfoTest {
+public final class ServiceInfoTest {
     @Test void testServiceInfoCompare() {
         var left = CatalogClientV1.INFO;
         var right = CatalogClientV1.INFO;

@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests the production API. Useful for one-off checks.
  */
 @Disabled
-public class CatalogClientV1ProdTests {
+public final class CatalogClientV1ProdTests {
     @Test void testGetBrands() {
         var sdk = CookiesSDK.builder()
                 .setApiKey(Optional.ofNullable(System.getenv("C6S_API_KEY_TESTING")))

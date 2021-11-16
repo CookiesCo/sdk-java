@@ -17,6 +17,8 @@ import co.cookies.sdk.catalog.CatalogClient;
 import co.cookies.sdk.catalog.v1.CatalogClientV1;
 import co.cookies.sdk.services.BaseService;
 import co.cookies.sdk.services.ServiceInfo;
+import co.cookies.sdk.storefront.Storefront;
+import co.cookies.sdk.storefront.v1.StorefrontClientV1;
 import com.google.api.core.ApiFunction;
 import com.google.api.gax.core.*;
 import com.google.api.gax.grpc.InstantiatingGrpcChannelProvider;
@@ -30,7 +32,6 @@ import io.grpc.ManagedChannelBuilder;
 import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.shaded.io.grpc.netty.NegotiationType;
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
-import io.grpc.netty.shaded.io.netty.handler.ssl.ApplicationProtocolConfig;
 import io.grpc.netty.shaded.io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
@@ -574,5 +575,20 @@ public abstract class CookiesSDKManager
     @Override
     public @Nonnull CatalogClient catalog(@Nonnull Optional<SDKConfiguration> serviceConfiguration) {
         return resolve(CatalogClientV1.INFO, () -> CatalogClientV1.configure(this));
+    }
+
+    /**
+     * Acquire access to the Cookies Storefront API, via the main Java service facade.
+     *
+     * @param serviceConfiguration Custom service configuration for the Storefront API, if any.
+     * @return Implementation of a Storefront API facade.
+     * @throws IllegalStateException If the SDK manager is already closed.
+     */
+    @Override
+    public @Nonnull Storefront storefront(@Nonnull Optional<SDKConfiguration> serviceConfiguration) {
+        return StorefrontClientV1.withServices(
+            resolve(StorefrontClientV1.MenuClientV1.INFO, () -> StorefrontClientV1.MenuClientV1.configure(this)),
+            resolve(StorefrontClientV1.ProfileClientV1.INFO, () -> StorefrontClientV1.ProfileClientV1.configure(this))
+        );
     }
 }

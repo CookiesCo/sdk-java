@@ -11,21 +11,27 @@
  * by trade secret and copyright law. Dissemination of this information, or reproduction of this material, in any form,
  * is strictly forbidden except in adherence with assigned license requirements.
  */
-package co.cookies.sdk;
+package co.cookies.sdk.storefront.v1.err;
 
 
-import co.cookies.sdk.services.Timeout;
-import org.junit.jupiter.api.Test;
+import javax.annotation.Nonnull;
 
-import java.util.concurrent.TimeUnit;
-import static org.junit.jupiter.api.Assertions.*;
+/**
+ * Error specifically thrown when checking validity of a desired username, and the result of the check is that the user
+ * is not, themselves, eligible to claim the username, until they complete activation of their account.
+ */
+public final class UsernameIneligibleError extends UsernameCheckError {
+    // Private constructor.
+    private UsernameIneligibleError() {
+        super("USERNAME_INELIGIBLE");
+    }
 
-
-/** Basic tests for {@link Timeout}. */
-public final class TimeoutSpecTest {
-    @Test void testTimeoutObject() {
-        var timeout = Timeout.of(5, TimeUnit.SECONDS);
-        assertEquals(5, timeout.value(), "timeout value should be correct");
-        assertEquals(TimeUnit.SECONDS, timeout.unit(), "timeout unit should be correct");
+    /**
+     * Create a well-formed `USERNAME_INVALID` error in response to a username validity check request.
+     *
+     * @return Username-taken-error.
+     */
+    public static @Nonnull UsernameIneligibleError create() {
+        return new UsernameIneligibleError();
     }
 }

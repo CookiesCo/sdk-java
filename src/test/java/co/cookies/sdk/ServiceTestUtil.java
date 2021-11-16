@@ -34,7 +34,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /** Utilities for testing a service mock. */
-public class ServiceTestUtil {
+public final class ServiceTestUtil {
+    private ServiceTestUtil() { /* Disallow construction. */ }
+
     /**
      * Stand-up the provided gRPC service in an in-memory server, hook it up to an in-memory channel to match, supply
      * both to a function that wraps them into a stub, and then supply the stub to the provided continuance function.

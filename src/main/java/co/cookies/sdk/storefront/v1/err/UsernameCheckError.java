@@ -11,21 +11,23 @@
  * by trade secret and copyright law. Dissemination of this information, or reproduction of this material, in any form,
  * is strictly forbidden except in adherence with assigned license requirements.
  */
-package co.cookies.sdk;
+package co.cookies.sdk.storefront.v1.err;
 
 
-import co.cookies.sdk.services.Timeout;
-import org.junit.jupiter.api.Test;
-
-import java.util.concurrent.TimeUnit;
-import static org.junit.jupiter.api.Assertions.*;
+import co.cookies.sdk.exceptions.RPCExecutionException;
 
 
-/** Basic tests for {@link Timeout}. */
-public final class TimeoutSpecTest {
-    @Test void testTimeoutObject() {
-        var timeout = Timeout.of(5, TimeUnit.SECONDS);
-        assertEquals(5, timeout.value(), "timeout value should be correct");
-        assertEquals(TimeUnit.SECONDS, timeout.unit(), "timeout unit should be correct");
+/**
+ * Specifies an abstract error case that covers each of the failure modes of a username check, including a username
+ * being taken, a username being banned for policy reasons, or a user being ineligible to claim a username.
+ */
+public abstract class UsernameCheckError extends RPCExecutionException {
+    /**
+     * Subclass constructor which operates on a string error code.
+     *
+     * @param code Error code to use in the response.
+     */
+    protected UsernameCheckError(String code) {
+        super(code, null);
     }
 }

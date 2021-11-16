@@ -11,21 +11,40 @@
  * by trade secret and copyright law. Dissemination of this information, or reproduction of this material, in any form,
  * is strictly forbidden except in adherence with assigned license requirements.
  */
-package co.cookies.sdk;
+package co.cookies.sdk.storefront.v1;
 
 
-import co.cookies.sdk.services.Timeout;
+import co.cookies.sdk.ProtoLoader;
+import cookies.schema.store.MenuRequest;
+import cookies.schema.store.MenuResponse;
+import cookies.schema.store.MenuV1Grpc;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.TimeUnit;
+import static co.cookies.sdk.ServiceTestUtil.acquireFirstResponse;
+import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-/** Basic tests for {@link Timeout}. */
-public final class TimeoutSpecTest {
-    @Test void testTimeoutObject() {
-        var timeout = Timeout.of(5, TimeUnit.SECONDS);
-        assertEquals(5, timeout.value(), "timeout value should be correct");
-        assertEquals(TimeUnit.SECONDS, timeout.unit(), "timeout unit should be correct");
+/** Make sure that Storefront services behave as expected. This smoke test should never fail. */
+public final class StorefrontMockConformanceTest {
+    private MenuV1Grpc.MenuV1ImplBase acquireMenuService() {
+        return MockStorefrontMenuServiceImpl.acquire();
+    }
+
+    @Test void testAcquireMenuService() {
+        assertNotNull(
+            acquireMenuService(),
+            "should be able to acquire a mock menu service implementation"
+        );
+    }
+
+    @Test void testMenuGenericConformance() {
+        assertThat(acquireFirstResponse(
+            MenuRequest.newBuilder().build(),
+            acquireMenuService()::menu
+        )).ignoringRepeatedFieldOrder().isEqualTo(ProtoLoader.loadTextFile(
+            MenuResponse.newBuilder(),
+            "/store_menu_default.prototxt"
+        ));
     }
 }

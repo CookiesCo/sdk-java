@@ -11,21 +11,30 @@
  * by trade secret and copyright law. Dissemination of this information, or reproduction of this material, in any form,
  * is strictly forbidden except in adherence with assigned license requirements.
  */
-package co.cookies.sdk;
+package co.cookies.sdk.storefront.v1;
+
+import co.cookies.sdk.ProtoLoader;
+import cookies.schema.store.MenuRequest;
+import cookies.schema.store.MenuResponse;
+import cookies.schema.store.MenuV1Grpc;
+import io.grpc.stub.StreamObserver;
 
 
-import co.cookies.sdk.services.Timeout;
-import org.junit.jupiter.api.Test;
+/** Mock implementation of the Storefront Menu API for local testing. */
+public final class MockStorefrontMenuServiceImpl extends MenuV1Grpc.MenuV1ImplBase {
+    private MockStorefrontMenuServiceImpl() { /* Please use static factory. */ }
 
-import java.util.concurrent.TimeUnit;
-import static org.junit.jupiter.api.Assertions.*;
+    /** @return Mock instance of the Storefront Menu service for testing, based on static responses. */
+    public static MockStorefrontMenuServiceImpl acquire() {
+        return new MockStorefrontMenuServiceImpl();
+    }
 
-
-/** Basic tests for {@link Timeout}. */
-public final class TimeoutSpecTest {
-    @Test void testTimeoutObject() {
-        var timeout = Timeout.of(5, TimeUnit.SECONDS);
-        assertEquals(5, timeout.value(), "timeout value should be correct");
-        assertEquals(TimeUnit.SECONDS, timeout.unit(), "timeout unit should be correct");
+    @Override
+    public void menu(MenuRequest request, StreamObserver<MenuResponse> responseObserver) {
+        responseObserver.onNext(ProtoLoader.loadTextFile(
+            MenuResponse.newBuilder(),
+            "/store_menu_default.prototxt"
+        ));
+        responseObserver.onCompleted();
     }
 }

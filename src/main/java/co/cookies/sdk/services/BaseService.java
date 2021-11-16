@@ -113,6 +113,11 @@ public abstract class BaseService<Stub extends BackgroundResource> implements Se
     }
 
     /** @inheritDoc */
+    @Override public @Nonnull Logger logger() {
+        return this.logging;
+    }
+
+    /** @inheritDoc */
     @Override public @Nonnull ServiceInfo getServiceInfo() {
         return this.serviceInfo;
     }
@@ -153,6 +158,32 @@ public abstract class BaseService<Stub extends BackgroundResource> implements Se
             descriptor,
             transformer,
             executorService()
+        );
+    }
+
+    /**
+     * Execute the provided asynchronous RPC operation, and if any response should be provided, return it directly
+     * in a future value container upon which conclusion listeners may be affixed.
+     *
+     * <p>If a response needs to be transformed before being handed back to invoking code, see method variants of this
+     * same name that accept a transformer argument.</p>
+     *
+     * @see #execute(AsyncRPC, MethodDescriptor, Function, Function) For the ability to transform the response.
+     * @param rpc RPC request which we need to execute and transform.
+     * @param method API method we wish to run to fulfill this request.
+     * @param <Request> Request message type for this operation.
+     * @param <Response> Response message type for this operation.
+     * @return Future which wraps the operation to execute the RPC and transform it.
+     */
+    protected final @Nonnull <Request extends Message, Response extends Message> ListenableFuture<Response> execute(
+        @Nonnull AsyncRPC<Request> rpc,
+        @Nonnull MethodDescriptor<Request, Response> descriptor,
+        @Nonnull Function<Request, ApiFuture<Response>> method) {
+        return execute(
+            rpc,
+            descriptor,
+            method,
+            (response) -> response
         );
     }
 
