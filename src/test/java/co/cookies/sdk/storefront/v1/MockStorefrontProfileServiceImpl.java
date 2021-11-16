@@ -14,7 +14,13 @@
 package co.cookies.sdk.storefront.v1;
 
 
-import cookies.schema.store.ProfileV1Grpc;
+import co.cookies.sdk.ProtoLoader;
+import com.google.protobuf.Empty;
+import cookies.schema.store.*;
+import cookies.schema.store.model.StoreUser;
+import io.grpc.Status;
+import io.grpc.stub.StreamObserver;
+
 
 /** Mock implementation of the Storefront Profile API for local testing. */
 public final class MockStorefrontProfileServiceImpl extends ProfileV1Grpc.ProfileV1ImplBase {
@@ -23,5 +29,48 @@ public final class MockStorefrontProfileServiceImpl extends ProfileV1Grpc.Profil
     /** @return Mock instance of the Storefront Profile service for testing, based on static responses. */
     public static MockStorefrontProfileServiceImpl acquire() {
         return new MockStorefrontProfileServiceImpl();
+    }
+
+    @Override
+    public void profileUsernameCheck(UsernameCheckRequest request, StreamObserver<Empty> responseObserver) {
+        if (request.getUsername().startsWith("failure")) {
+            // simulate failure
+            var user = request.getUsername();
+            if (user.contains("taken")) {
+                // simulate the username being taken
+                responseObserver.onError(Status.ALREADY_EXISTS.asRuntimeException());
+            } else if (user.contains("policy")) {
+                // simulate the username being blocked for policy reasons
+                responseObserver.onError(Status.INVALID_ARGUMENT.asRuntimeException());
+            } else if (user.contains("ineligible")) {
+                // simulate the username being blocked because the account is ineligible
+                responseObserver.onError(Status.FAILED_PRECONDITION.asRuntimeException());
+            } else {
+                // simulate a standard failure
+                responseObserver.onError(Status.UNIMPLEMENTED.asRuntimeException());
+            }
+        } else {
+            // simulate success
+            responseObserver.onNext(Empty.newBuilder().build());
+            responseObserver.onCompleted();
+        }
+    }
+
+    @Override
+    public void profile(ProfileRequest request, StreamObserver<ProfileResponse> responseObserver) {
+        responseObserver.onNext(ProtoLoader.loadTextFile(
+            ProfileResponse.newBuilder(),
+            "/store_profile_fetch.prototxt"
+        ));
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void profileUpdate(ProfileUpdateRequest request, StreamObserver<StoreUser> responseObserver) {
+        responseObserver.onNext(ProtoLoader.loadTextFile(
+            StoreUser.newBuilder(),
+            "/store_profile_update.prototxt"
+        ));
+        responseObserver.onCompleted();
     }
 }

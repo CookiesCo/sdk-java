@@ -15,9 +15,8 @@ package co.cookies.sdk.storefront.v1;
 
 
 import co.cookies.sdk.ProtoLoader;
-import cookies.schema.store.MenuRequest;
-import cookies.schema.store.MenuResponse;
-import cookies.schema.store.MenuV1Grpc;
+import cookies.schema.store.*;
+import cookies.schema.store.model.StoreUser;
 import org.junit.jupiter.api.Test;
 
 import static co.cookies.sdk.ServiceTestUtil.acquireFirstResponse;
@@ -31,10 +30,18 @@ public final class StorefrontMockConformanceTest {
         return MockStorefrontMenuServiceImpl.acquire();
     }
 
-    @Test void testAcquireMenuService() {
+    private ProfileV1Grpc.ProfileV1ImplBase acquireProfileService() {
+        return MockStorefrontProfileServiceImpl.acquire();
+    }
+
+    @Test void testAcquireServices() {
         assertNotNull(
             acquireMenuService(),
             "should be able to acquire a mock menu service implementation"
+        );
+        assertNotNull(
+            acquireProfileService(),
+            "should be able to acquire a mock profile service implementation"
         );
     }
 
@@ -45,6 +52,36 @@ public final class StorefrontMockConformanceTest {
         )).ignoringRepeatedFieldOrder().isEqualTo(ProtoLoader.loadTextFile(
             MenuResponse.newBuilder(),
             "/store_menu_default.prototxt"
+        ));
+    }
+
+    @Test void testMenuSearchConformance() {
+        assertThat(acquireFirstResponse(
+            MenuSearchRequest.newBuilder().build(),
+            acquireMenuService()::menuSearch
+        )).ignoringRepeatedFieldOrder().isEqualTo(ProtoLoader.loadTextFile(
+            MenuSearchResponse.newBuilder(),
+            "/store_menu_search.prototxt"
+        ));
+    }
+
+    @Test void testProfileFetchConformance() {
+        assertThat(acquireFirstResponse(
+            ProfileRequest.newBuilder().build(),
+            acquireProfileService()::profile
+        )).ignoringRepeatedFieldOrder().isEqualTo(ProtoLoader.loadTextFile(
+            ProfileResponse.newBuilder(),
+            "/store_profile_fetch.prototxt"
+        ));
+    }
+
+    @Test void testProfileEditConformance() {
+        assertThat(acquireFirstResponse(
+            ProfileUpdateRequest.newBuilder().build(),
+            acquireProfileService()::profileUpdate
+        )).ignoringRepeatedFieldOrder().isEqualTo(ProtoLoader.loadTextFile(
+            StoreUser.newBuilder(),
+            "/store_profile_update.prototxt"
         ));
     }
 }

@@ -14,9 +14,7 @@
 package co.cookies.sdk.storefront.v1;
 
 import co.cookies.sdk.ProtoLoader;
-import cookies.schema.store.MenuRequest;
-import cookies.schema.store.MenuResponse;
-import cookies.schema.store.MenuV1Grpc;
+import cookies.schema.store.*;
 import io.grpc.stub.StreamObserver;
 
 
@@ -34,6 +32,15 @@ public final class MockStorefrontMenuServiceImpl extends MenuV1Grpc.MenuV1ImplBa
         responseObserver.onNext(ProtoLoader.loadTextFile(
             MenuResponse.newBuilder(),
             "/store_menu_default.prototxt"
+        ));
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void menuSearch(MenuSearchRequest request, StreamObserver<MenuSearchResponse> responseObserver) {
+        responseObserver.onNext(ProtoLoader.loadTextFile(
+            MenuSearchResponse.newBuilder(),
+            "/store_menu_search.prototxt"
         ));
         responseObserver.onCompleted();
     }

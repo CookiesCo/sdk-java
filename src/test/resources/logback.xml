@@ -6,11 +6,18 @@
             <pattern>%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n</pattern>
         </encoder>
     </appender>
-    <root level="trace">
+    <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
 
-    <logger name="co.cookies.sdk.CookiesSDK" level="DEBUG" />
-    <logger name="co.cookies.sdk.CookiesSDKManager" level="DEBUG" />
-    <logger name="co.cookies.services:catalog:v1" level="DEBUG" />
+    <logger name="co.cookies.sdk" level="TRACE" />
+    <logger name="co.cookies.sdk.services" level="TRACE" />
+    <logger name="co.cookies.sdk.catalog" level="TRACE" />
+    <logger name="co.cookies.sdk.catalog.v1" level="TRACE" />
+    <logger name="co.cookies.sdk.storefront" level="TRACE" />
+    <logger name="co.cookies.sdk.storefront.v1" level="TRACE" />
+    <logger name="co.cookies.sdk.CookiesSDK" level="TRACE" />
+    <logger name="co.cookies.sdk.CookiesSDKManager" level="TRACE" />
+    <logger name="co.cookies.services:catalog:v1" level="TRACE" />
+    <logger name="co.cookies.services:storefront:v1" level="TRACE" />
 </configuration>
