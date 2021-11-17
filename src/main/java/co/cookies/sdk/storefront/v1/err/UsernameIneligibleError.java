@@ -11,36 +11,27 @@
  * by trade secret and copyright law. Dissemination of this information, or reproduction of this material, in any form,
  * is strictly forbidden except in adherence with assigned license requirements.
  */
-package co.cookies.sdk.exceptions;
+package co.cookies.sdk.storefront.v1.err;
 
 
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
-
+import javax.annotation.Nonnull;
 
 /**
- * Abstract base for all exceptions originating from the Cookies SDK for Java, including both checked exceptions (such
- * as {@link java.io.IOException}s encountered when initializing) and {@link RuntimeException} descendents that surface
- * during RPC calls.
+ * Error specifically thrown when checking validity of a desired username, and the result of the check is that the user
+ * is not, themselves, eligible to claim the username, until they complete activation of their account.
  */
-@Immutable @ThreadSafe
-public abstract class CookiesSDKException extends RuntimeException {
-    /**
-     * Constructor for an SDK exception with an error message and an underlying cause.
-     *
-     * @param message Error message.
-     * @param cause Underlying cause.
-     */
-    public CookiesSDKException(String message, Throwable cause) {
-        super(message, cause);
+public final class UsernameIneligibleError extends UsernameCheckError {
+    // Private constructor.
+    private UsernameIneligibleError() {
+        super("USERNAME_INELIGIBLE");
     }
 
     /**
-     * Constructor for an SDK exception with an underlying cause.
+     * Create a well-formed `USERNAME_INVALID` error in response to a username validity check request.
      *
-     * @param cause Underlying cuase.
+     * @return Username-taken-error.
      */
-    public CookiesSDKException(Throwable cause) {
-        super(cause);
+    public static @Nonnull UsernameIneligibleError create() {
+        return new UsernameIneligibleError();
     }
 }

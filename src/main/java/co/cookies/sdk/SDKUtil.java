@@ -26,6 +26,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.protobuf.Message;
 import io.grpc.MethodDescriptor;
+import io.grpc.StatusRuntimeException;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -144,6 +145,11 @@ public final class SDKUtil {
             );
 
         } catch (ExecutionException exe) {
+            if (exe.getCause() instanceof CookiesSDKException) {
+                // re-throw unwrapped, no need to wrap in an RPC execution exception because it already originates from
+                // the RPC internals.
+                throw (CookiesSDKException)exe.getCause();
+            }
             // re-throw as interrupt exception
             throw runtimeErr(
                 logger,
@@ -255,6 +261,14 @@ public final class SDKUtil {
                 // if we never have a next item, then it's an empty result stream.
                 return Stream.empty();
             } catch (RuntimeException rxe) {
+                var cause = rxe.getCause();
+                while (cause != null && !(cause instanceof CookiesSDKException)) {
+                    cause = cause.getCause();
+                }
+                if (cause != null) {
+                    throw (CookiesSDKException)cause;
+                }
+
                 throw runtimeErr(
                     logger,
                     RPCExecutionException::new,
@@ -298,6 +312,14 @@ public final class SDKUtil {
                 // if an error happens during processing of the RPC itself, wrap it in an expected SDK error type, and
                 // make sure we log about it.
                 catching(wrap(future), RuntimeException.class, (rxe) -> {
+                    assert rxe != null;
+                    var cause = rxe.getCause();
+                    while (cause != null && !(cause instanceof CookiesSDKException)) {
+                        cause = cause.getCause();
+                    }
+                    if (cause != null) {
+                        throw (CookiesSDKException)cause;
+                    }
                     throw runtimeErr(
                         logger,
                         RPCExecutionException::new,

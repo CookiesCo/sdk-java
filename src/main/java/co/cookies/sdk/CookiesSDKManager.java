@@ -17,6 +17,8 @@ import co.cookies.sdk.catalog.CatalogClient;
 import co.cookies.sdk.catalog.v1.CatalogClientV1;
 import co.cookies.sdk.services.BaseService;
 import co.cookies.sdk.services.ServiceInfo;
+import co.cookies.sdk.storefront.Storefront;
+import co.cookies.sdk.storefront.v1.StorefrontClientV1;
 import com.google.api.core.ApiFunction;
 import com.google.api.gax.core.*;
 import com.google.api.gax.grpc.InstantiatingGrpcChannelProvider;
@@ -24,13 +26,13 @@ import com.google.api.gax.rpc.HeaderProvider;
 import com.google.api.gax.rpc.TransportChannelProvider;
 import com.google.auth.Credentials;
 import com.google.auto.value.AutoValue;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.shaded.io.grpc.netty.NegotiationType;
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
-import io.grpc.netty.shaded.io.netty.handler.ssl.ApplicationProtocolConfig;
 import io.grpc.netty.shaded.io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
@@ -328,7 +330,7 @@ public abstract class CookiesSDKManager
             return (Service)serviceMap.get(info);
         }
 
-        // otherwise, setup the service, cache it, and return
+        // otherwise, set up the service, cache it, and return
         if (logging.isDebugEnabled())
             logging.debug(format("Creating registered service '%s'.", info.serviceTag()));
         return register(service.get());
@@ -412,12 +414,23 @@ public abstract class CookiesSDKManager
         return getLoggerFactory().orElseGet(LoggerFactory::getILoggerFactory);
     }
 
+    /**
+     * Indicate whether private access is enabled for this SDK instance; in private access mode, the SDK will use
+     * endpoints that are only available within the Cookies Cloud.
+     *
+     * @return Whether private access is enabled.
+     */
+    public @Nonnull Boolean privateAccess() {
+        return getPrivateAccess().orElse(false);
+    }
+
     // Method stub to return any higher-order channel configurator configured for this SDK manager.
     public abstract @Nonnull Optional<Function<ManagedChannelBuilder, ManagedChannelBuilder>> getChannelConfigurator();
 
     // Utility function to return a channel configurator, based on the provided high-order channel configurator, or any
     // defaults that should be applied.
-    private ApiFunction<ManagedChannelBuilder, ManagedChannelBuilder> channelConfigurator() {
+    @VisibleForTesting
+    ApiFunction<ManagedChannelBuilder, ManagedChannelBuilder> channelConfigurator() {
         return input -> {
             // apply base customizations
             input.useTransportSecurity();
@@ -433,7 +446,7 @@ public abstract class CookiesSDKManager
             nettyBuilder.negotiationType(NegotiationType.TLS);
 
             // apply any requisite private access settings
-            if (getPrivateAccess().orElse(false)) {
+            if (privateAccess()) {
                 var endpoint = endpoint();
                 if (logging.isInfoEnabled())
                     logging.info("Enabling private Cookies API access (endpoint: '{}')", endpoint);
@@ -499,19 +512,14 @@ public abstract class CookiesSDKManager
      */
     @Override
     public @Nonnull CredentialsProvider credentialsProvider() {
-        var defaultProvider = getCredentialsProvider();
-        if (defaultProvider.isPresent()) {
-            // mount default credentials if available
-            return defaultProvider.get();
-        }
-
-        var defaultCredentials = getCredentials();
-        if (defaultCredentials.isPresent()) {
-            return FixedCredentialsProvider.create(defaultCredentials.get());
-        }
-
-        // otherwise, just fly with no credentials
-        return NoCredentialsProvider.create();
+        // if the user has provided an explicit set of credentials, use those, by wrapping them in a fixed credential
+        // provider. otherwise, check if the user has provided their own provider. if they have, use that. if they have
+        // not provided a provider or explicit set of credentials, create a `NoCredentialsProvider`.
+        return getCredentials()
+            .map((creds) -> (CredentialsProvider)FixedCredentialsProvider.create(creds))
+            .orElseGet(() ->
+                getCredentialsProvider().orElseGet(NoCredentialsProvider::create)
+            );
     }
 
     /**
@@ -574,5 +582,20 @@ public abstract class CookiesSDKManager
     @Override
     public @Nonnull CatalogClient catalog(@Nonnull Optional<SDKConfiguration> serviceConfiguration) {
         return resolve(CatalogClientV1.INFO, () -> CatalogClientV1.configure(this));
+    }
+
+    /**
+     * Acquire access to the Cookies Storefront API, via the main Java service facade.
+     *
+     * @param serviceConfiguration Custom service configuration for the Storefront API, if any.
+     * @return Implementation of a Storefront API facade.
+     * @throws IllegalStateException If the SDK manager is already closed.
+     */
+    @Override
+    public @Nonnull Storefront storefront(@Nonnull Optional<SDKConfiguration> serviceConfiguration) {
+        return StorefrontClientV1.withServices(
+            resolve(StorefrontClientV1.MenuClientV1.INFO, () -> StorefrontClientV1.MenuClientV1.configure(this)),
+            resolve(StorefrontClientV1.ProfileClientV1.INFO, () -> StorefrontClientV1.ProfileClientV1.configure(this))
+        );
     }
 }

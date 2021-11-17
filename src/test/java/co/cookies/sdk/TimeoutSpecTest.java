@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 /** Basic tests for {@link Timeout}. */
-public class TimeoutSpecTest {
+public final class TimeoutSpecTest {
     @Test void testTimeoutObject() {
         var timeout = Timeout.of(5, TimeUnit.SECONDS);
         assertEquals(5, timeout.value(), "timeout value should be correct");
