@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"co.cookies.sdk"},{"l":"co.cookies.sdk.catalog"},{"l":"co.cookies.sdk.catalog.v1"},{"l":"co.cookies.sdk.exceptions"},{"l":"co.cookies.sdk.services"}]
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"co.cookies.sdk"},{"l":"co.cookies.sdk.catalog"},{"l":"co.cookies.sdk.catalog.v1"},{"l":"co.cookies.sdk.exceptions"},{"l":"co.cookies.sdk.services"},{"l":"co.cookies.sdk.storefront"},{"l":"co.cookies.sdk.storefront.v1"},{"l":"co.cookies.sdk.storefront.v1.err"}]
