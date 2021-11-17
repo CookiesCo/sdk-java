@@ -1,0 +1,83 @@
+menu {
+    meta {
+        zones {
+            key: 1
+            value {
+                locale {
+                    locale {
+                        site: "cbd.cookies.store"
+                    }
+                }
+            }
+        }
+        zones {
+            key: 2
+            value {
+                locale {
+                    locale {
+                        site: "cookiessf.com"
+                    }
+                }
+            }
+        }
+        zones {
+            key: 3
+            value {
+                locale {
+                    locale {
+                        store {
+                            code: "BOH"
+                        }
+                    }
+                }
+            }
+        }
+    }
+    product {
+        cgid: "C6C20-BDHD-MWCN"
+        slug: "caps-bedhead-cbd-capsules"
+        variants {
+            variant {
+                ctin: "C033274"
+            }
+        }
+    }
+    product {
+        cgid: "C6C20-CLTY-MWCN"
+        slug: "caps-clarity-cbd-capsules"
+        variants {
+            variant {
+                ctin: "C033275"
+            }
+        }
+    }
+    product {
+        cgid: "C6S21-0000001"
+        slug: "cookies-8bit-tee"
+        variants {
+            variance: APPAREL_VARIANCE
+        }
+    }
+    product {
+        cgid: "C6C20-0005-TDC-001"
+        slug: "cereal-milk-cbd-day-drops"
+        variants {
+            variant {
+                ctin: "C033278"
+            }
+            variant {
+                ctin: "C033283"
+            }
+        }
+    }
+    product {
+        cgid: "C6C20-0020-XFBI"
+        slug: "apples-bananas-indoor-thc-flower"
+        sort: 5
+        variants {
+            variant {
+                ctin: "C001999"
+            }
+        }
+    }
+}

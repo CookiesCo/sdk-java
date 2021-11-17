@@ -13,22 +13,11 @@
  */
 package co.cookies.sdk.catalog.v1;
 
-import co.cookies.sdk.CookiesSDK;
 import co.cookies.sdk.catalog.CatalogClient;
 import co.cookies.sdk.catalog.v1.stub.CatalogV1StubSettings;
-import com.google.api.gax.grpc.GrpcTransportChannel;
-import com.google.api.gax.rpc.FixedTransportChannelProvider;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.MoreExecutors;
 import cookies.schema.catalog.*;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -45,24 +34,15 @@ public final class CatalogClientV1Tests {
     }
 
     private void acquireMockedClient(Consumer<CatalogClient> clientTest) {
-        standup(
-            acquireService(),
-            (server, channel) -> CatalogV1StubSettings.newBuilder()
-                    .setTransportChannelProvider(FixedTransportChannelProvider.create(
-                        GrpcTransportChannel.create(channel)))
+        setupMockedClient(
+            clientTest,
+            this::acquireService,
+            (server, channelProvider) -> CatalogV1StubSettings.newBuilder()
+                    .setTransportChannelProvider(channelProvider)
                     .build()
-                    .createStub(), (stub) -> {
-            // using the provided stub, factory ourselves a client instance, and hand it to the test.
-            clientTest.accept(CatalogClientV1.forStub(stub));
-        });
-    }
-
-    private <T> T resolve(ListenableFuture<T> future) {
-        try {
-            return future.get(2, TimeUnit.MINUTES);
-        } catch (InterruptedException | TimeoutException | ExecutionException rxe) {
-            throw new RuntimeException(rxe);
-        }
+                    .createStub(),
+            CatalogClientV1::forStub
+        );
     }
 
     @Test void testAcquireMockService() {
@@ -92,7 +72,7 @@ public final class CatalogClientV1Tests {
             assertEquals(
                 client.getServiceName(),
                 "catalog",
-                "catalog service should `catalog` name"
+                "catalog service should have `catalog` as name"
             );
             assertEquals(
                 client.getServiceVersion(),
@@ -108,43 +88,6 @@ public final class CatalogClientV1Tests {
                 "auth keys should be optional w/catalog API"
             );
         });
-    }
-
-    @Test void testConfigurableClient() {
-        var sdk = CookiesSDK
-                .builder()
-                .setEndpoint(Optional.of("sample.local:1234"))
-                .setExecutorService(Optional.of(MoreExecutors.listeningDecorator(
-                    Executors.newSingleThreadScheduledExecutor())))
-                .build();
-
-        assertNotNull(
-            sdk,
-            "should be able to acquire SDK via configurable entrypoint"
-        );
-        assertEquals(
-            "sample.local:1234",
-            sdk.endpoint(),
-            "overridden endpoint should apply"
-        );
-        assertEquals(
-            "sample.local:1234",
-            sdk.catalog().service().getSettings().getEndpoint(),
-            "overridden endpoint should apply for catalog service"
-        );
-        assertEquals(
-            "sample.local:1234",
-            sdk.getSettings().endpoint(),
-            "overridden SDK-level endpoint should apply for catalog service"
-        );
-        assertNotNull(
-            sdk.getSettings(),
-            "should be able to get SDK-level settings from the client"
-        );
-        assertDoesNotThrow(
-            sdk::close,
-            "SDK objects should be safely closeable"
-        );
     }
 
     @Test void testFetchBrandsBlocking() {

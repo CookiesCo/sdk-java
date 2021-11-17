@@ -11,36 +11,7 @@
  * by trade secret and copyright law. Dissemination of this information, or reproduction of this material, in any form,
  * is strictly forbidden except in adherence with assigned license requirements.
  */
-package co.cookies.sdk.exceptions;
-
-
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
-
-
 /**
- * Abstract base for all exceptions originating from the Cookies SDK for Java, including both checked exceptions (such
- * as {@link java.io.IOException}s encountered when initializing) and {@link RuntimeException} descendents that surface
- * during RPC calls.
+ * This package defines errors which are used specifically in the Storefront suite of services.
  */
-@Immutable @ThreadSafe
-public abstract class CookiesSDKException extends RuntimeException {
-    /**
-     * Constructor for an SDK exception with an error message and an underlying cause.
-     *
-     * @param message Error message.
-     * @param cause Underlying cause.
-     */
-    public CookiesSDKException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    /**
-     * Constructor for an SDK exception with an underlying cause.
-     *
-     * @param cause Underlying cuase.
-     */
-    public CookiesSDKException(Throwable cause) {
-        super(cause);
-    }
-}
+package co.cookies.sdk.storefront.v1.err;

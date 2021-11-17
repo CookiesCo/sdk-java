@@ -1,0 +1,13 @@
+profile {
+    key {
+        profile_id: "abc123"
+    }
+    user_id: "abc123"
+    username: "hello"
+    avatar: "asset/1cd34f38d45fd1bb/original/CBite-Blue-on-White-No-Padding"
+}
+auth {
+    user_data {
+        token: "abc123"
+    }
+}

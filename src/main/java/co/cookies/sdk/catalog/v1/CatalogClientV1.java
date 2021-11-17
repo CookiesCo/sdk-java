@@ -30,7 +30,6 @@ import cookies.schema.Brand;
 import cookies.schema.Strain;
 import cookies.schema.catalog.*;
 import org.slf4j.ILoggerFactory;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
@@ -48,9 +47,9 @@ import static co.cookies.sdk.SDKUtil.protect;
  * API client implementing access to the Cookies Catalog API, which provides canonical catalog content for products made
  * by or carried by Cookies.
  *
- * <p>The <a href="https://console.api.cookies.co">Catalog API</a> is a <b>private API service</b> enabling Cookies
- * partners to consume raw content. It does not provide inventory signals or other information. Content may be requested
- * in a specific localized language or format.</p>
+ * <p>The <a href="https://go.cookies.co/apis">Catalog API</a> is a <b>private API service</b> enabling Cookies partners
+ * to consume canonical content for products made or sold by Cookies. It does not provide inventory signals or other
+ * information. Content may be requested in a specific localized language or format.</p>
  */
 @Immutable @ThreadSafe
 @Client(name = CatalogClientV1.NAME, version = CatalogClientV1.VERSION)
@@ -61,7 +60,7 @@ public final class CatalogClientV1 extends BaseService<CatalogV1Client> implemen
     /** Specification describing this service. */
     public final static CatalogServiceInfo INFO = new CatalogServiceInfo();
 
-    /** Service info specification for the Catalog API. */
+    /** Service info specification for the Catalog API, version 1. */
     @Immutable @ThreadSafe
     public final static class CatalogServiceInfo extends BaseServiceInfo {
         // Name of this service.
@@ -95,12 +94,11 @@ public final class CatalogClientV1 extends BaseService<CatalogV1Client> implemen
      * @param catalogClient Catalog client object to mount.
      * @param serviceLogger Logger for this service.
      */
-    private CatalogClientV1(@Nonnull CatalogV1Client catalogClient,
-                            @Nonnull ILoggerFactory serviceLogger) {
+    private CatalogClientV1(@Nonnull CatalogV1Client catalogClient, @Nonnull ILoggerFactory serviceLogger) {
         super(INFO, catalogClient, serviceLogger);
     }
 
-    // -- Client Acquisition -- //
+    // -- Static Factories -- //
 
     /**
      * Configure an instance of the Catalog Client facade using the provided SDK configuration suite, including any
@@ -118,7 +116,7 @@ public final class CatalogClientV1 extends BaseService<CatalogV1Client> implemen
         return protect(ServiceSetupError::new, () -> new CatalogClientV1(
                 CatalogV1Client.create(CatalogV1Settings.newBuilder()
                     .setEndpoint(configuration.endpoint())
-                    .setExecutorProvider(configuration.executorProvider())
+                    .setBackgroundExecutorProvider(configuration.executorProvider())
                     .setHeaderProvider(configuration.headerProvider())
                     .setCredentialsProvider(configuration.credentialsProvider())
                     .setTransportChannelProvider(configuration.transportChannelProvider())
@@ -161,19 +159,15 @@ public final class CatalogClientV1 extends BaseService<CatalogV1Client> implemen
     @Override
     public @Nonnull ListeningScheduledExecutorService executorService() {
         if (service().getSettings() != null) {
-            return MoreExecutors.listeningDecorator(service().getSettings().getExecutorProvider().getExecutor());
+            return MoreExecutors.listeningDecorator(
+                service().getSettings().getBackgroundExecutorProvider().getExecutor()
+            );
         }
 
         // no custom executor: use a single-thread scheduled executor.
         return MoreExecutors.listeningDecorator(
             Executors.newSingleThreadScheduledExecutor()
         );
-    }
-
-    /** @inheritDoc */
-    @Override
-    public @Nonnull Logger logger() {
-        return logging;
     }
 
     // -- API Interface: Catalog -- //

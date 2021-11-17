@@ -11,36 +11,23 @@
  * by trade secret and copyright law. Dissemination of this information, or reproduction of this material, in any form,
  * is strictly forbidden except in adherence with assigned license requirements.
  */
-package co.cookies.sdk.exceptions;
+package co.cookies.sdk.storefront.v1.err;
 
 
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import co.cookies.sdk.exceptions.RPCExecutionException;
 
 
 /**
- * Abstract base for all exceptions originating from the Cookies SDK for Java, including both checked exceptions (such
- * as {@link java.io.IOException}s encountered when initializing) and {@link RuntimeException} descendents that surface
- * during RPC calls.
+ * Specifies an abstract error case that covers each of the failure modes of a username check, including a username
+ * being taken, a username being banned for policy reasons, or a user being ineligible to claim a username.
  */
-@Immutable @ThreadSafe
-public abstract class CookiesSDKException extends RuntimeException {
+public abstract class UsernameCheckError extends RPCExecutionException {
     /**
-     * Constructor for an SDK exception with an error message and an underlying cause.
+     * Subclass constructor which operates on a string error code.
      *
-     * @param message Error message.
-     * @param cause Underlying cause.
+     * @param code Error code to use in the response.
      */
-    public CookiesSDKException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    /**
-     * Constructor for an SDK exception with an underlying cause.
-     *
-     * @param cause Underlying cuase.
-     */
-    public CookiesSDKException(Throwable cause) {
-        super(cause);
+    protected UsernameCheckError(String code) {
+        super(code, null);
     }
 }

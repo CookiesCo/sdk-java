@@ -1,0 +1,315 @@
+menu {
+    meta {
+        brands {
+           key: 1
+           value {
+               brand {
+                   bid: "C6BI-00001"
+                   owned: true
+                   icon {
+                       uri: "asset/1cd34f38d45fd1bb/original/CBite-Blue-on-White-No-Padding"
+                   }
+                   sort_weight: 1
+                   brand {
+                       name {
+                           primary: "Cookies"
+                       }
+                       slug: "cookies"
+                       link: "https://cookies.co"
+                   }
+               }
+               count: 2
+           }
+        }
+        product_lines {
+            line: MUSHROOMS
+            count: 2
+        }
+        strains {
+            key: 1
+            value {
+                strain {
+                    id: "C6C20-BDHD"
+                    slug: "bedhead"
+                    name {
+                        primary: "Bed Head"
+                    }
+                    brand {
+                        bid: "C6BI-00001"
+                    }
+                    featured: true
+                    exclusive: true
+                }
+                count: 1
+            }
+        }
+        strains {
+            key: 2
+            value {
+                strain {
+                    id: "C6C20-CLTY"
+                    slug: "clarity"
+                    name {
+                        primary: "Clarity"
+                    }
+                    brand {
+                        bid: "C6BI-00001"
+                    }
+                    featured: true
+                    exclusive: true
+                }
+                count: 1
+            }
+        }
+        strains {
+            key: 3
+            value {
+                strain {
+                    id: "C6C20-0005"
+                    slug: "cereal-milk"
+                    name {
+                        primary: "Cereal Milk"
+                    }
+                    brand {
+                        bid: "C6BI-00001"
+                    }
+                    exclusive: true
+                }
+                count: 1
+            }
+        }
+        zones {
+            key: 1
+            value {
+                locale {
+                    locale {
+                        site: "cbd.cookies.store"
+                    }
+                }
+            }
+        }
+        zones {
+            key: 2
+            value {
+                locale {
+                    locale {
+                        site: "cookiessf.com"
+                    }
+                }
+            }
+        }
+        zones {
+            key: 3
+            value {
+                locale {
+                    locale {
+                        store {
+                            code: "BOH"
+                        }
+                    }
+                }
+            }
+        }
+    }
+    product {
+        cgid: "C6C20-BDHD-MWCN"
+        slug: "caps-bedhead-cbd-capsules"
+        locale {
+            key: 1
+            value {
+                available: true
+            }
+        }
+        locale {
+            key: 3
+            value {
+                available: true
+            }
+        }
+        price {
+            value: 54.99
+        }
+        sort: 1
+        info {
+            name: "Caps by Cookies | Bed Head CBD Capsules"
+            thumb: "catalog/s--6hhqp_He--/ggdo1x06uwss6rftbtsa"
+            kind: APOTHECARY
+            flag: FEATURED
+            flag: EXCLUSIVE
+            brand: 1
+            strain: 1
+            line: MUSHROOMS
+            category: "Caps / CBD / Capsule"
+        }
+        variants {
+            variance: COUNT_VARIANCE
+            variant {
+                ctin: "C033274"
+                variance {
+                  count: 30
+                }
+            }
+        }
+    }
+    product {
+        cgid: "C6C20-CLTY-MWCN"
+        slug: "caps-clarity-cbd-capsules"
+        locale {
+            key: 1
+            value {
+                available: true
+            }
+        }
+        price {
+            value: 54.99
+        }
+        sort: 2
+        info {
+            name: "Caps by Cookies | Clarity CBD Capsules"
+            thumb: "catalog/s--QVUn1xVS--/jhaxng31tzw0x2ergj70"
+            kind: APOTHECARY
+            flag: FEATURED
+            flag: EXCLUSIVE
+            brand: 1
+            strain: 2
+            line: MUSHROOMS
+            category: "Caps / CBD / Capsule"
+        }
+        variants {
+            variance: COUNT_VARIANCE
+            variant {
+                ctin: "C033275"
+                variance {
+                  count: 30
+                }
+            }
+        }
+    }
+    product {
+        cgid: "C6S21-0000001"
+        slug: "cookies-8bit-tee"
+        locale {
+            key: 2
+            value {
+                available: true
+            }
+        }
+        price {
+            value: 34.0
+        }
+        sort: 3
+        info {
+            name: "Cookies 8-bit Tee"
+            thumb: "catalog/s--QVUn1xVS--/jhaxng31tzw0x2ergj70"
+            kind: MERCHANDISE
+            brand: 1
+            line: APPAREL
+            category: "Apparel / T-Shirt"
+        }
+        variants {
+            variance: APPAREL_VARIANCE
+            variant {
+                available: true
+                variance {
+                    apparel {
+                        color: "Black"
+                    }
+                }
+            }
+            variant {
+                available: true
+                variance {
+                    apparel {
+                        color: "Washed Black"
+                    }
+                }
+            }
+            variant {
+                available: false
+                variance {
+                    apparel {
+                        color: "White"
+                    }
+                }
+            }
+        }
+    }
+    product {
+        cgid: "C6C20-0005-TDC-001"
+        slug: "cereal-milk-cbd-day-drops"
+        locale {
+            key: 1
+            value {
+                available: true
+            }
+        }
+        range {
+            min: 54.99
+            max: 99.99
+        }
+        sort: 4
+        info {
+            name: "Cereal Milk | CBD Day Drops"
+            thumb: "catalog/s--SZ23sHw6--/znkzdwrkj2xao2wdymmb"
+            kind: APOTHECARY
+            flag: EXCLUSIVE
+            brand: 1
+            strain: 3
+            line: CBD
+            category: "Wellness / Tincture / CBD / Daytime"
+        }
+        variants {
+            variance: WEIGHT_VARIANCE
+            variant {
+                ctin: "C033278"
+                variance {
+                  weight {
+                    milliliters: 15.0
+                  }
+                }
+            }
+            variant {
+                ctin: "C033283"
+                variance {
+                  weight {
+                    milliliters: 30.0
+                  }
+                }
+            }
+        }
+    }
+    product {
+        cgid: "C6C20-0020-XFBI"
+        slug: "apples-bananas-indoor-thc-flower"
+        locale {
+            key: 3
+            value {
+                available: true
+                price: 64.99
+            }
+        }
+        sort: 5
+        info {
+            name: "Apples & Bananas | THC | Indoor Flower"
+            thumb: "catalog/s--EENB5Edf--/x4qrsj8gjxvgyfd6dbbu"
+            kind: FLOWER
+            flag: EXCLUSIVE
+            brand: 1
+            strain: 4
+            line: THC
+            category: "Flower / Packed / THC"
+        }
+        variants {
+            variance: WEIGHT_VARIANCE
+            variant {
+                ctin: "C001999"
+                available: true
+                variance {
+                  weight {
+                    grams: 3.5
+                  }
+                }
+            }
+        }
+    }
+}

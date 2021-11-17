@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /** Basic sanity test -- should always pass. */
-public class SanityTest {
+public final class SanityTest {
     @Test void testSanity() {
         assertEquals(4, 2 + 2, "2 + 2 should always equal 4");
     }

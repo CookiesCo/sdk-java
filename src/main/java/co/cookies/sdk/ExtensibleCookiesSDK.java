@@ -77,12 +77,6 @@ public abstract class ExtensibleCookiesSDK<Settings extends SDKConfiguration>
         );
     }
 
-    /** @return Default fully-rendered API endpoint. */
-    @Override
-    public @Nonnull String endpoint() {
-        return getDefaultApiEndpoint();
-    }
-
     /** @return Active settings for this SDK implementation. */
     abstract @Nonnull Settings getSettings();
 }

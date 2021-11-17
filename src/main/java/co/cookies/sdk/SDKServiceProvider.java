@@ -60,7 +60,7 @@ public interface SDKServiceProvider extends Closeable, AutoCloseable {
      * @return Pre-configured Storefront facade.
      */
     default @Nonnull Storefront storefront() {
-        throw new IllegalStateException("not yet implemented");
+        return storefront(Optional.empty());
     }
 
     /**
@@ -81,4 +81,24 @@ public interface SDKServiceProvider extends Closeable, AutoCloseable {
      */
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @Nonnull CatalogClient catalog(@Nonnull Optional<SDKConfiguration> serviceConfiguration);
+
+    /**
+     * Configure and return a customized instance of the {@link Storefront} facade, which enables access to a battery
+     * of APIs included in the Cookies Storefront Service.
+     *
+     * <p>The Storefront API is a service meant for <b>trading partners</b>, <b>development partners</b>, and other
+     * affiliated organizations, and calls an API backend which requires authentication with an API key, and, depending
+     * on scope, authorized credentials.</p>
+     *
+     * <p>These credentials and keys can be acquired through the Tech@Cookies team. See main library docs for more
+     * information.</p>
+     *
+     * <p><b>Note:</b> Instead of configuring a custom service, invoking code should consider using the builder methods
+     * for {@link CookiesSDK}, which keep configuration uniform across services.</p>
+     *
+     * @param serviceConfiguration Custom configuration to apply to the resulting catalog service.
+     * @return Configured Storefront API facade.
+     */
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    @Nonnull Storefront storefront(@Nonnull Optional<SDKConfiguration> serviceConfiguration);
 }
