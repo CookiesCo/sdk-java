@@ -31,7 +31,7 @@ public final class MockStorefrontMenuServiceImpl extends MenuV1Grpc.MenuV1ImplBa
     public void menu(MenuRequest request, StreamObserver<MenuResponse> responseObserver) {
         responseObserver.onNext(ProtoLoader.loadTextFile(
             MenuResponse.newBuilder(),
-            "/store_menu_default.prototxt"
+            request.getKeysOnly() ? "/store_menu_keysonly.prototxt" : "/store_menu_default.prototxt"
         ));
         responseObserver.onCompleted();
     }

@@ -28,6 +28,8 @@ import cookies.schema.store.*;
 import cookies.schema.store.model.MenuSearchResultset;
 import cookies.schema.store.model.ProductContext;
 import cookies.schema.store.model.StoreUser;
+import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
 
 import javax.annotation.Nonnull;
 import java.util.Locale;

@@ -13,6 +13,11 @@
  */
 package co.cookies.sdk;
 
+import co.cookies.sdk.exceptions.CookiesSDKException;
+import com.google.api.gax.grpc.GrpcTransportChannel;
+import com.google.api.gax.rpc.FixedTransportChannelProvider;
+import com.google.api.gax.rpc.TransportChannelProvider;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.protobuf.Message;
 import io.grpc.BindableService;
 import io.grpc.ManagedChannel;
@@ -22,12 +27,15 @@ import io.grpc.inprocess.InProcessServerBuilder;
 import io.grpc.stub.StreamObserver;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,6 +44,58 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /** Utilities for testing a service mock. */
 public final class ServiceTestUtil {
     private ServiceTestUtil() { /* Disallow construction. */ }
+
+    /**
+     * Block and resolve the provided listenable future within 2 minutes.
+     *
+     * @param future Future to resolve.
+     * @param <T> Return type of the future.
+     * @return The result of the future.
+     */
+    public static <T> T resolve(ListenableFuture<T> future) {
+        try {
+            return future.get(2, TimeUnit.MINUTES);
+        } catch (ExecutionException rxe) {
+            if (rxe.getCause() instanceof CookiesSDKException) {
+                throw (CookiesSDKException) rxe.getCause();
+            } else {
+                throw new RuntimeException(rxe);
+            }
+        } catch (InterruptedException | TimeoutException rxe) {
+            throw new RuntimeException(rxe);
+        }
+    }
+
+    /**
+     * Set up a fully mocked client and hand it to the provided client-side test; use the provided service supplier to
+     * create the service mock one-off just for this test. The resulting server can dispatch only in-memory to avoid
+     * network stack issues.
+     *
+     * @param clientTest Client test to execute against the resulting mocked client.
+     * @param serviceProvider Service provider for the service we intend to stand up.
+     * @param stubFactory Factory method to produce a stub from the provided channel.
+     * @param clientFactory Factory method which can produce a client facade from a stub.
+     * @param <Service> Service implementation to factory and test.
+     * @param <Stub> Stub implementation to use when creating our testing client.
+     * @param <Client> Client facade type we intend to exercise with the provided client test.
+     */
+    public static <Service extends BindableService, Stub, Client> void setupMockedClient(
+            Consumer<Client> clientTest,
+            Supplier<Service> serviceProvider,
+            ThrowingBiFunction<Server, TransportChannelProvider, Stub, IOException> stubFactory,
+            Function<Stub, Client> clientFactory) {
+        standup(
+                serviceProvider.get(),
+                (server, channel) -> {
+                    var channelProvider = FixedTransportChannelProvider
+                            .create(GrpcTransportChannel.create(channel));
+                    return stubFactory.accept(server, channelProvider);
+                }, (stub) -> {
+                    // using the provided stub, factory ourselves a client instance, and hand it to the test.
+                    clientTest.accept(clientFactory.apply(stub));
+                }
+        );
+    }
 
     /**
      * Stand-up the provided gRPC service in an in-memory server, hook it up to an in-memory channel to match, supply

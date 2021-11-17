@@ -37,7 +37,7 @@ import java.util.*;
  * </ul></p>
  */
 @NotThreadSafe
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "OptionalUsedAsFieldOrParameterType"})
 public final class MenuRequestSpec implements Serializable {
     private static final long serialVersionUID = 20211115L;
     private static final Locale DEFAULT_LOCALE = Locale.US;
@@ -97,7 +97,8 @@ public final class MenuRequestSpec implements Serializable {
             getLocale(),
             getLocation(),
             getStoreKey(),
-            getUserId()
+            getUserId(),
+            isKeysOnly()
         );
     }
 
@@ -290,11 +291,12 @@ public final class MenuRequestSpec implements Serializable {
      * content locale, and with no specified store.
      *
      * @param userId Known user account ID.
+     * @param locale Content locale for the resulting menu request.
      * @return Menu request specification containing the specified ID.
      */
-    public static @Nonnull MenuRequestSpec forUser(@Nonnull String userId) {
+    public static @Nonnull MenuRequestSpec forUser(@Nonnull String userId, @Nonnull Optional<Locale> locale) {
         return new MenuRequestSpec(
-            DEFAULT_LOCALE,
+            locale.orElse(DEFAULT_LOCALE),
             null,
             null,
             userId
@@ -307,11 +309,14 @@ public final class MenuRequestSpec implements Serializable {
      *
      * @param userId Known user account ID.
      * @param location Known or estimated user location.
+     * @param locale Content locale for the resulting menu request.
      * @return Menu request specification containing the specified ID.
      */
-    public static @Nonnull MenuRequestSpec forUser(@Nonnull String userId, @Nonnull UserLocation location) {
+    public static @Nonnull MenuRequestSpec forUser(@Nonnull String userId,
+                                                   @Nonnull UserLocation location,
+                                                   @Nonnull Optional<Locale> locale) {
         return new MenuRequestSpec(
-            DEFAULT_LOCALE,
+            locale.orElse(DEFAULT_LOCALE),
             location,
             null,
             userId
@@ -325,13 +330,15 @@ public final class MenuRequestSpec implements Serializable {
      * @param userId Known user account ID.
      * @param location Known or estimated user location.
      * @param storeKey Selected or hinted store for this user.
+     * @param locale Content locale for the resulting menu request.
      * @return Menu request specification containing the specified ID.
      */
     public static @Nonnull MenuRequestSpec forUser(@Nonnull String userId,
                                                    @Nonnull UserLocation location,
-                                                   @Nonnull StoreKey storeKey) {
+                                                   @Nonnull StoreKey storeKey,
+                                                   @Nonnull Optional<Locale> locale) {
         return new MenuRequestSpec(
-            DEFAULT_LOCALE,
+            locale.orElse(DEFAULT_LOCALE),
             location,
             storeKey,
             userId

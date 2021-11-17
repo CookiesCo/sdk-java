@@ -16,6 +16,7 @@ package co.cookies.sdk.storefront.v1;
 
 import co.cookies.sdk.CookiesSDK;
 import co.cookies.sdk.SDKConfiguration;
+import co.cookies.sdk.exceptions.RPCExecutionException;
 import co.cookies.sdk.exceptions.ServiceSetupError;
 import co.cookies.sdk.services.AsyncRPC;
 import co.cookies.sdk.services.BaseService;
@@ -341,7 +342,7 @@ public final class StorefrontClientV1 implements Storefront {
 
             // no custom executor: use a single-thread scheduled executor.
             return MoreExecutors.listeningDecorator(
-                    Executors.newSingleThreadScheduledExecutor()
+                Executors.newSingleThreadScheduledExecutor()
             );
         }
 
@@ -355,26 +356,34 @@ public final class StorefrontClientV1 implements Storefront {
                 ProfileV1Grpc.getProfileUsernameCheckMethod(),
                 service().profileUsernameCheckCallable()::futureCall,
                 (response) -> true
-            ), StatusRuntimeException.class, (exc) -> {
-                var responseCode = exc != null ? exc.getStatus().getCode() : Status.Code.INTERNAL;
-
-                switch(responseCode) {
-                    // if a `FAILED_PRECONDITION` status is returned, the user has not yet activated their account,
-                    // which is a pre-requisite for picking a username.
-                    case FAILED_PRECONDITION: throw UsernameIneligibleError.create();
-
-                    // if an `INVALID_ARGUMENT` status is returned, the username is not taken but is also not available
-                    // for policy reasons (potentially because it includes hate speech or other banned terms).
-                    case INVALID_ARGUMENT: throw UsernameInvalidError.create();
-
-                    // if an `ALREADY_EXISTS` status is returned, the username is taken by another user.
-                    case ALREADY_EXISTS: break;
-
-                    // otherwise, it's just a regular old error, not an indication from the server relating to our
-                    // username check request, so we just re-throw the exception.
-                    default: throw exc != null ? exc : responseCode.toStatus().asRuntimeException();
+            ), RPCExecutionException.class, (exc) -> {
+                var cause = exc != null ? exc.getCause() : null;
+                while (cause != null && !(cause instanceof StatusRuntimeException)) {
+                    cause = cause.getCause();
                 }
-                return false;
+                if (cause != null) {
+                    var responseCode = ((StatusRuntimeException) cause).getStatus().getCode();
+
+                    switch(responseCode) {
+                        // if a `FAILED_PRECONDITION` status is returned, the user has not yet activated their account,
+                        // which is a pre-requisite for picking a username.
+                        case FAILED_PRECONDITION: throw UsernameIneligibleError.create();
+
+                        // if an `INVALID_ARGUMENT` status is returned, the username is not taken but is also not
+                        // available for policy reasons (potentially because it includes hate speech or other banned
+                        // terms or invalid username options).
+                        case INVALID_ARGUMENT: throw UsernameInvalidError.create();
+
+                        // if an `ALREADY_EXISTS` status is returned, the username is taken by another user.
+                        case ALREADY_EXISTS: return false;
+
+                        // otherwise, it's just a regular old error, not an indication from the server relating to our
+                        // username check request, so we just re-throw the exception.
+                        default: break;
+                    }
+                }
+                // rethrow
+                throw (exc != null ? exc : Status.INTERNAL.asRuntimeException());
             }, executorService());
         }
 

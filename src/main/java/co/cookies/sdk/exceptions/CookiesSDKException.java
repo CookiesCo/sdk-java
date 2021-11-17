@@ -26,15 +26,6 @@ import javax.annotation.concurrent.ThreadSafe;
 @Immutable @ThreadSafe
 public abstract class CookiesSDKException extends RuntimeException {
     /**
-     * Constructor for an SDK exception with an error message.
-     *
-     * @param message Error message.
-     */
-    public CookiesSDKException(String message) {
-        super(message);
-    }
-
-    /**
      * Constructor for an SDK exception with an error message and an underlying cause.
      *
      * @param message Error message.
