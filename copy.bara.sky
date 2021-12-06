@@ -47,6 +47,9 @@ core.workflow(
     origin_files = glob([".gitattributes", "README.md"] + [
         "**/*.*",
         "*.*",
+    ], exclude = [
+        "docs/*.*",
+        "docs/**/*.*",
     ]),
     transformations = [
         metadata.save_author(),
