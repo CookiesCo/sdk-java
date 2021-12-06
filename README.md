@@ -28,7 +28,7 @@ In your **`pom.xml`**:
     <dependency>
         <groupId>co.cookies.sdk</groupId>
         <artifactId>sdk-java</artifactId>
-        <version>v1.2021r1-beta5</version>
+        <version>v1.2021r1-beta6</version>
     </dependency>
 </dependencies>
 
@@ -46,7 +46,7 @@ In your **`pom.xml`**:
 Groovy syntax:
 ```groovy
 dependencies {
-    implementation 'co.cookies.sdk:sdk-java:v1.2021r1-beta5'
+    implementation 'co.cookies.sdk:sdk-java:v1.2021r1-beta6'
 }
 
 repositories {
@@ -59,7 +59,7 @@ repositories {
 Kotlin syntax:
 ```kotlin
 dependencies {
-    implementation("co.cookies.sdk.sdk-java:v1.2021r1-beta5")
+    implementation("co.cookies.sdk.sdk-java:v1.2021r1-beta6")
 }
 
 maven {
@@ -73,7 +73,7 @@ In your **`WORKSPACE`**:
 ```starlark
 maven_jar(
   name = "co_cookies_sdk",
-  artifact = "co.cookies.sdk.sdk-java:v1.2021r1-beta5",
+  artifact = "co.cookies.sdk.sdk-java:v1.2021r1-beta6",
 )
 ```
 
@@ -92,7 +92,7 @@ own codebase:
 | Dependency          | Coordinates                         | Version      |
 | ------------------- | ----------------------------------- | ------------ |
 | Protocol Buffers    | `com.google.protobuf:protobuf-java` | `3.15.x `    |
-| gRPC Java           | `io.grpc:grpc-bom`                  | `1.37.0`     |
+| gRPC Java           | `io.grpc:grpc-bom`                  | `1.39.0`     |
 | _Any SLF4J library_ | _N/A_                               | _N/A_        |
 
 #### A note about logging
