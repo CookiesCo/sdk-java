@@ -12,6 +12,10 @@ The Java SDK supports the following APIs so far:
 - [ ] **App API**: Fetch lists of stores, strains, etc. Provides methods that roughly map to user application features.
 - [x] **Catalog API**: Fetch a set of canonical Cookies product content, given a locale and scope.
 - [ ] **Inventory API**: Fetch on-hand inventory for a given supply chain locale, anywhere in the Cookies network.
+- [x] **Storefront API**: Collection of services supporting multi-channel e-commerce within the Cookies network. 
+  - [x] **Menu API**: Localized inventory-aware menus for all Cookies supply chain zones.
+  - [x] **Profile API**: Read and write access to Cookies Accounts user profiles.
+  - [ ] **Checkout API**: Checkout, order status, and order management for digital Cookies orders.
 
 
 ### Installing the SDK
@@ -28,7 +32,7 @@ In your **`pom.xml`**:
     <dependency>
         <groupId>co.cookies.sdk</groupId>
         <artifactId>sdk-java</artifactId>
-        <version>v1.2021r1-beta6</version>
+        <version>v1.2021r1-beta7</version>
     </dependency>
 </dependencies>
 
@@ -46,7 +50,7 @@ In your **`pom.xml`**:
 Groovy syntax:
 ```groovy
 dependencies {
-    implementation 'co.cookies.sdk:sdk-java:v1.2021r1-beta6'
+    implementation 'co.cookies.sdk:sdk-java:v1.2021r1-beta7'
 }
 
 repositories {
@@ -59,7 +63,7 @@ repositories {
 Kotlin syntax:
 ```kotlin
 dependencies {
-    implementation("co.cookies.sdk.sdk-java:v1.2021r1-beta6")
+    implementation("co.cookies.sdk.sdk-java:v1.2021r1-beta7")
 }
 
 maven {
@@ -73,7 +77,7 @@ In your **`WORKSPACE`**:
 ```starlark
 maven_jar(
   name = "co_cookies_sdk",
-  artifact = "co.cookies.sdk.sdk-java:v1.2021r1-beta6",
+  artifact = "co.cookies.sdk.sdk-java:v1.2021r1-beta7",
 )
 ```
 
