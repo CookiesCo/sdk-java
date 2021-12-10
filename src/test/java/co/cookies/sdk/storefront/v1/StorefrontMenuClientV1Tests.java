@@ -187,30 +187,4 @@ public final class StorefrontMenuClientV1Tests {
             ));
         });
     }
-
-    @Test void testMenuSearchBlocking() {
-        acquireMockedClient((client) -> {
-            var storeSearch = client.search(SyncRPC.of(MenuSearchRequest.newBuilder()
-                .setTerm("some search term")
-                .build()));
-            assertNotNull(
-                storeSearch,
-                "should get valid result for sync store search operation"
-            );
-        });
-    }
-
-    @Test void testMenuSearchNonBlocking() {
-        acquireMockedClient((client) -> {
-            var storeSearch = resolve(
-                client.search(async(MenuSearchRequest.newBuilder()
-                    .setTerm("some search term")
-                    .build()))
-            );
-            assertNotNull(
-                storeSearch,
-                "should get valid result for async store search operation"
-            );
-        });
-    }
 }

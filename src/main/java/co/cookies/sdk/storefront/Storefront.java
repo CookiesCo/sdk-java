@@ -25,11 +25,8 @@ import co.cookies.sdk.storefront.v1.err.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import cookies.schema.StoreKey;
 import cookies.schema.store.*;
-import cookies.schema.store.model.MenuSearchResultset;
 import cookies.schema.store.model.ProductContext;
 import cookies.schema.store.model.StoreUser;
-import io.grpc.Status;
-import io.grpc.StatusRuntimeException;
 
 import javax.annotation.Nonnull;
 import java.util.Locale;
@@ -216,37 +213,58 @@ public interface Storefront {
         @Nonnull ListenableFuture<MenuResponse> menu(@Nonnull AsyncRPC<MenuRequest> rpc);
 
         /**
-         * Synchronously perform a search across available menu items for a given context, based on arbitrary term input
-         * and any facet filters or regular filters applied by the user (or underlying code).
+         * Fetch a single product group by its CGID (Cookies Product Group ID) from the Storefront Menu API, decorated
+         * with any available inventory state available within the provided `market`.
          *
-         * <p>Search results typically reference items via their CPIDs -- i.e. abstract product groups, which contain
-         * variants. When using this method, results are filtered based on live inventory signals.</p>
+         * <p>An async variant of this method is also available, and should generally be preferred unless dispatching
+         * from a background thread.</p>
          *
-         * @see #search(AsyncRPC) Asynchronous variant of this method.
-         * @param rpc Crafted RPC request payload for a menu search operation which is wrapped to execute synchronously.
-         * @return Rendered menu search results, based on the input parameters in the subject RPC request payload.
+         * @see #product(SyncRPC) For full control of the RPC
+         * @see #menu(AsyncRPC) For an async variant of this method
+         * @param cgid Cookies Product Group ID (CGID).
+         * @param market Market area hint for inventory availability.
+         * @return Response describing the requested product group, if available, considering the provided market hint.
          */
-        default @Nonnull MenuSearchResultset search(@Nonnull SyncRPC<MenuSearchRequest> rpc) {
-            return block(
-                rpc,
-                logger(),
-                MenuV1Grpc.getMenuSearchMethod(),
-                this::search
+        default @Nonnull ProductGroupResponse product(@Nonnull String cgid, @Nonnull Optional<String> market) {
+            var builder = ProductGroupRequest.newBuilder()
+                    .setCgid(cgid);
+            market.ifPresent(builder::setMarket);
+
+            return product(
+                SyncRPC.of(builder.build())
             );
         }
 
         /**
-         * Asynchronously perform a search across available menu items for a given context, based on arbitrary term
-         * input and any facet filters or regular filters applied by the user (or underlying code).
+         * Fetch a single product group by its CGID (Cookies Product Group ID) from the Storefront Menu API, decorated
+         * with any available inventory state available within the provided `market`.
          *
-         * <p>Search results typically reference items via their CPIDs -- i.e. abstract product groups, which contain
-         * variants. When using this method, results are filtered based on live inventory signals.</p>
+         * <p>An async variant of this method is also available, and should generally be preferred unless dispatching
+         * from a background thread.</p>
          *
-         * @see #search(AsyncRPC) Asynchronous variant of this method.
-         * @param rpc Crafted RPC request payload for a menu search operation which is wrapped to execute synchronously.
-         * @return Rendered menu search results, based on the input parameters in the subject RPC request payload.
+         * @see #menu(AsyncRPC) For an async variant of this method
+         * @param rpc Request payload for the product fetch we wish to perform.
+         * @return Response describing the requested product group, if available, considering the provided market hint.
          */
-        @Nonnull ListenableFuture<MenuSearchResultset> search(@Nonnull AsyncRPC<MenuSearchRequest> rpc);
+        default @Nonnull ProductGroupResponse product(@Nonnull SyncRPC<ProductGroupRequest> rpc) {
+            return block(
+                rpc,
+                logger(),
+                MenuV1Grpc.getProductFetchMethod(),
+                this::product
+            );
+        }
+
+        /**
+         * Fetch a single product group by its CGID (Cookies Product Group ID) from the Storefront Menu API, decorated
+         * with any available inventory state available within the provided `market`.
+         *
+         *
+         * @see #product(SyncRPC) For a synchronous version of this method
+         * @param rpc Request payload for the product fetch we wish to perform.
+         * @return Response describing the requested product group, if available, considering the provided market hint.
+         */
+        @Nonnull ListenableFuture<ProductGroupResponse> product(@Nonnull AsyncRPC<ProductGroupRequest> rpc);
     }
 
     /**

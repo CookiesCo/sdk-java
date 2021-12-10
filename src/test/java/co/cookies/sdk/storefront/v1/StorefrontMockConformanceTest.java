@@ -55,16 +55,6 @@ public final class StorefrontMockConformanceTest {
         ));
     }
 
-    @Test void testMenuSearchConformance() {
-        assertThat(acquireFirstResponse(
-            MenuSearchRequest.newBuilder().build(),
-            acquireMenuService()::menuSearch
-        )).ignoringRepeatedFieldOrder().isEqualTo(ProtoLoader.loadTextFile(
-            MenuSearchResponse.newBuilder(),
-            "/store_menu_search.prototxt"
-        ));
-    }
-
     @Test void testProfileFetchConformance() {
         assertThat(acquireFirstResponse(
             ProfileRequest.newBuilder().build(),

@@ -35,13 +35,4 @@ public final class MockStorefrontMenuServiceImpl extends MenuV1Grpc.MenuV1ImplBa
         ));
         responseObserver.onCompleted();
     }
-
-    @Override
-    public void menuSearch(MenuSearchRequest request, StreamObserver<MenuSearchResponse> responseObserver) {
-        responseObserver.onNext(ProtoLoader.loadTextFile(
-            MenuSearchResponse.newBuilder(),
-            "/store_menu_search.prototxt"
-        ));
-        responseObserver.onCompleted();
-    }
 }

@@ -30,7 +30,6 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import cookies.schema.store.*;
-import cookies.schema.store.model.MenuSearchResultset;
 import cookies.schema.store.model.StoreUser;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
@@ -208,12 +207,11 @@ public final class StorefrontClientV1 implements Storefront {
 
         /** @inheritDoc */
         @Override
-        public @Nonnull ListenableFuture<MenuSearchResultset> search(@Nonnull AsyncRPC<MenuSearchRequest> rpc) {
+        public @Nonnull ListenableFuture<ProductGroupResponse> product(@Nonnull AsyncRPC<ProductGroupRequest> rpc) {
             return execute(
                 rpc,
-                MenuV1Grpc.getMenuSearchMethod(),
-                service().menuSearchCallable()::futureCall,
-                MenuSearchResponse::getResultset
+                MenuV1Grpc.getProductFetchMethod(),
+                service().productFetchCallable()::futureCall
             );
         }
     }

@@ -73,12 +73,7 @@ public final class ErrorInjectingStorefrontMenuServiceImpl {
         }
 
         @Override
-        public void menuFacets(MenuFacetsRequest request, StreamObserver<MenuSearchFacets> responseObserver) {
-            injectError(responseObserver);
-        }
-
-        @Override
-        public void menuSearch(MenuSearchRequest request, StreamObserver<MenuSearchResponse> responseObserver) {
+        public void productFetch(ProductGroupRequest request, StreamObserver<ProductGroupResponse> responseObserver) {
             injectError(responseObserver);
         }
     }
