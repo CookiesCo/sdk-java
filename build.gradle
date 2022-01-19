@@ -10,7 +10,7 @@ plugins {
 
 group "co.cookies.sdk"
 archivesBaseName = "sdk-java"
-version "v1.2021r1-beta12"
+version "v1.2021r1-beta13"
 
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -23,15 +23,15 @@ dependencies {
     api group: "com.google.api", name: "gax-grpc", version: "2.6.1"
     api group: "org.slf4j", name: "slf4j-api", version: "1.7.33"
     api group: "javax.annotation", name: "javax.annotation-api", version: "1.3.2"
-    api group: "co.cookies.sdk", name: "gapic-sdk-catalog-v1-java", version: "v1.2021r1beta12"
-    api group: "co.cookies.sdk.grpc", name: "grpc-sdk-catalog-v1-java", version: "v1.2021r1beta12"
-    api group: "co.cookies.sdk.proto", name: "proto-sdk-catalog-v1-java", version: "v1.2021r1beta12"
-    api group: "co.cookies.sdk", name: "gapic-sdk-storefront-v1-java", version: "v1.2021r1beta12"
-    api group: "co.cookies.sdk.grpc", name: "grpc-sdk-storefront-v1-java", version: "v1.2021r1beta12"
-    api group: "co.cookies.sdk.proto", name: "proto-sdk-storefront-v1-java", version: "v1.2021r1beta12"
-    api group: "co.cookies.sdk", name: "proto-catalog", version: "v1.2021r1beta12"
-    api group: "co.cookies.sdk", name: "proto-cookies", version: "v1.2021r1beta12"
-    api group: "co.cookies.sdk", name: "proto-storefront", version: "v1.2021r1beta12"
+    api group: "co.cookies.sdk", name: "gapic-sdk-catalog-v1-java", version: "v1.2021r1beta13"
+    api group: "co.cookies.sdk.grpc", name: "grpc-sdk-catalog-v1-java", version: "v1.2021r1beta13"
+    api group: "co.cookies.sdk.proto", name: "proto-sdk-catalog-v1-java", version: "v1.2021r1beta13"
+    api group: "co.cookies.sdk", name: "gapic-sdk-storefront-v1-java", version: "v1.2021r1beta13"
+    api group: "co.cookies.sdk.grpc", name: "grpc-sdk-storefront-v1-java", version: "v1.2021r1beta13"
+    api group: "co.cookies.sdk.proto", name: "proto-sdk-storefront-v1-java", version: "v1.2021r1beta13"
+    api group: "co.cookies.sdk", name: "proto-catalog", version: "v1.2021r1beta13"
+    api group: "co.cookies.sdk", name: "proto-cookies", version: "v1.2021r1beta13"
+    api group: "co.cookies.sdk", name: "proto-storefront", version: "v1.2021r1beta13"
     compileOnly group: "com.google.auto.value", name: "auto-value-annotations", version: "1.9"
     runtimeOnly group: "ch.qos.logback", name: "logback-classic", version: "1.2.10"
     annotationProcessor group: "com.google.auto.value", name: "auto-value", version: "1.9"
