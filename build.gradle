@@ -17,7 +17,7 @@ targetCompatibility = 11
 
 dependencies {
     api group: "io.grpc", name: "grpc-stub", version: "1.39.0"
-    api group: "io.grpc", name: "grpc-protobuf", version: "1.39.0"
+    api group: "io.grpc", name: "grpc-protobuf", version: "1.44.0"
     api group: "io.grpc", name: "grpc-netty-shaded", version: "1.39.0"
     api group: "com.google.api", name: "gax", version: "2.7.1"
     api group: "com.google.api", name: "gax-grpc", version: "2.6.1"
